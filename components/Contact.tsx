@@ -33,7 +33,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
           first_name: name,
           email_id: email,
           mobile_no: phone,
-          notes: custom_message,
+          custom_message: custom_message, // Geändert zu custom_message laut User-Feedback
           lead_owner: "MM Event Website",
           source: "Webseite"
         }),
@@ -110,7 +110,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   id="message" 
                   rows={2} 
                   required
-                  value={message}
+                  value={custom_message}
                   onChange={(e) => setMessage(e.target.value)}
                   className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none transition-all resize-none font-serif text-base"
                 ></textarea>

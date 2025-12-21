@@ -6,7 +6,7 @@ import { CONFIG } from '../config';
 const FALLBACK_IMAGES: GalleryImage[] = [
   { 
     id: 1, 
-    url: 'https://picsum.photos/1600/900?random=10', 
+    url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop', 
     title: 'Golden Gala Night', 
     category: 'Gala',
     location: 'Palais Ferstel, Wien',
@@ -40,9 +40,17 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
     const loadProjects = async () => {
       try {
         const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status", "image", "notes"]);
-        const response = await fetch(`${CONFIG.API_URL}/api/resource/Project?fields=${fields}`);
+        // WICHTIG: encodeURIComponent verhindert, dass Sonderzeichen im JSON den Request korrumpieren
+        const url = `${CONFIG.API_URL}/api/resource/Project?fields=${encodeURIComponent(fields)}`;
         
-        if (!response.ok) throw new Error("Failed to fetch from proxy");
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const json = await response.json();
         const data = json.data || [];
@@ -67,10 +75,10 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
         }
         setStatus(LoadingState.SUCCESS);
       } catch (error) {
-        console.error("Error loading projects:", error);
+        console.warn("Projekt-Abruf fehlgeschlagen (Load failed). Nutze Fallback-Bilder.", error);
         setProjects(FALLBACK_IMAGES);
         setDisplayImages([...FALLBACK_IMAGES, ...FALLBACK_IMAGES, ...FALLBACK_IMAGES]);
-        setStatus(LoadingState.SUCCESS); // Fallback anzeigen statt Error-UI
+        setStatus(LoadingState.SUCCESS);
       }
     };
 
