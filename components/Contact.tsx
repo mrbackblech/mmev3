@@ -7,7 +7,7 @@ interface ContactProps {
 }
 
 export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
-  const [message, setMessage] = useState(initialMessage);
+  const [custom_message, setMessage] = useState(initialMessage);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
