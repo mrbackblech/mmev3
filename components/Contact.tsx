@@ -33,7 +33,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
           first_name: name,
           email_id: email,
           mobile_no: phone,
-          notes: message,
+          notes: custom_message,
           lead_owner: "MM Event Website",
           source: "Webseite"
         }),
