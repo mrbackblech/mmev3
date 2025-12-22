@@ -39,7 +39,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status","image"]);
+        const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status", "image"]);
         // WICHTIG: encodeURIComponent verhindert, dass Sonderzeichen im JSON den Request korrumpieren
         const url = `${CONFIG.API_URL}/api/resource/Project?fields=${encodeURIComponent(fields)}`;
         
