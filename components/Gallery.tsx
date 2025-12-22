@@ -39,7 +39,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status"]);
+        const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status", "image", "notes"]);
         // WICHTIG: encodeURIComponent verhindert, dass Sonderzeichen im JSON den Request korrumpieren
         const url = `${CONFIG.API_URL}/api/resource/Project?fields=${encodeURIComponent(fields)}`;
         
@@ -59,17 +59,23 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
           setProjects(FALLBACK_IMAGES);
           setDisplayImages([...FALLBACK_IMAGES, ...FALLBACK_IMAGES, ...FALLBACK_IMAGES]);
         } else {
-          const mappedProjects: GalleryImage[] = data.map((p: any, idx: number) => ({
-            id: idx + 1,
-            url: p.image ,//|| `https://picsum.photos/1600/900?random=${idx + 50}`,
-            title: p.project_name || "MM Projekt",
-            category: p.status || "Event",
-            location: "Exklusiv-Location",
-            date: p.expected_end_date ? new Date(p.expected_end_date).toLocaleDateString('de-DE') : "In Planung",
-            description: p.notes || "Ein maßgeschneidertes Event-Konzept von MM EVENT.",
-            highlights: ["Premium Service", "Individuelle X Planung"],
-            additionalImages: []
-          }));
+          const mappedProjects: GalleryImage[] = data.map((p: any, idx: number) => {
+            let fullImageUrl = p.image 
+                ? `${CONFIG.API_URL}${p.image}` 
+                : `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069`;
+
+            return {
+              id: idx + 1,
+              url: fullImageUrl,
+              title: p.project_name || "MM Projekt",
+              category: p.status || "Event",
+              location: "Exklusiv-Location",
+              date: p.expected_end_date ? new Date(p.expected_end_date).toLocaleDateString('de-DE') : "In Planung",
+              description: p.notes || "Ein maßgeschneidertes Event-Konzept von MM EVENT.",
+              highlights: ["Premium Service", "Individuelle Planung"],
+              additionalImages: []
+            };
+          });
           setProjects(mappedProjects);
           setDisplayImages([...mappedProjects, ...mappedProjects, ...mappedProjects]);
         }
