@@ -7,13 +7,13 @@ const FALLBACK_IMAGES: GalleryImage[] = [
   { 
     id: 1, 
     url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop', 
-    title: 'Golden Gala Night', 
+    title: 'Golden Gala G Night', 
     category: 'Gala',
     location: 'Palais Ferstel, Wien',
     date: '14. Oktober 2023',
     description: 'Ein Abend voller Glanz und Glamour. Für dieses exklusive Gala-Dinner verwandelten wir den historischen Ballsaal in ein goldenes Lichtermeer.',
     highlights: ['5-Gänge Sterne-Menü', 'Live Jazz-Bigband', 'Maßgeschneidertes Lichtdesign'],
-    additionalImages: []
+    additionalImages: ['https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop']
   }
 ];
 
@@ -39,7 +39,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status", "image", "notes"]);
+        const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status"]);
         // WICHTIG: encodeURIComponent verhindert, dass Sonderzeichen im JSON den Request korrumpieren
         const url = `${CONFIG.API_URL}/api/resource/Project?fields=${encodeURIComponent(fields)}`;
         
