@@ -1,0 +1,36 @@
+# Nginx-Konfiguration für Vite SPA (Single Page Application)
+# Diese Datei zeigt, wie die App auf Nginx deployed werden sollte
+
+server {
+    listen 80;
+    server_name mmev2.46.224.126.20.sslip.io;
+    
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Gzip-Kompression aktivieren
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/json;
+
+    # Statische Assets mit langen Cache-Zeiten
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Für SPA: Alle Routen auf index.html umleiten
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Favicon explizit behandeln
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    # 404-Fehler abfangen
+    error_page 404 /index.html;
+}
