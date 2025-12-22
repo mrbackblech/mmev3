@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, Loader2 } from 'lucide-react';
-import { CONFIG } from '../config';
+import { erpnextService } from '../services/erpnextService';
 
 interface ContactProps {
   initialMessage?: string;
@@ -24,22 +24,13 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${CONFIG.API_URL}/api/resource/Lead`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          first_name: name,
-          email_id: email,
-          mobile_no: phone,
-          custom_message: custom_message, // Geändert zu custom_message laut User-Feedback
-          //lead_owner: "MM Event Website",
-          source: "Webseite"
-        }),
+      await erpnextService.createLead({
+        first_name: name,
+        email_id: email,
+        mobile_no: phone,
+        custom_message: custom_message,
+        source: "Webseite"
       });
-
-      if (!response.ok) throw new Error("Failed to send lead");
 
       alert("Vielen Dank für Ihre Nachricht. Wir haben Ihre Anfrage erhalten und werden uns in Kürze bei Ihnen melden.");
       setName('');

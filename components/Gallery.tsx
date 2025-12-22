@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import { ChevronLeft, ChevronRight, X, MapPin, Calendar, CheckCircle2 } from 'lucide-react';
 import { GalleryImage, LoadingState } from '../types';
-import { CONFIG } from '../config';
+import { erpnextService } from '../services/erpnextService';
 
 const FALLBACK_IMAGES: GalleryImage[] = [
   { 
@@ -39,30 +39,15 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status", "notes"]);
-        // WICHTIG: encodeURIComponent verhindert, dass Sonderzeichen im JSON den Request korrumpieren
-        const url = `${CONFIG.API_URL}/api/resource/Project?fields=${encodeURIComponent(fields)}`;
-        
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-        
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
-        const json = await response.json();
-        const data = json.data || [];
+        const data = await erpnextService.getProjects();
 
         if (data.length === 0) {
           setProjects(FALLBACK_IMAGES);
           setDisplayImages([...FALLBACK_IMAGES, ...FALLBACK_IMAGES, ...FALLBACK_IMAGES]);
         } else {
-          const mappedProjects: GalleryImage[] = data.map((p: any, idx: number) => {
-            let fullImageUrl = p.image 
-                ? `${CONFIG.API_URL}${p.image}` 
-                : `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069`;
+          const mappedProjects: GalleryImage[] = data.map((p, idx: number) => {
+            const fullImageUrl = erpnextService.getImageUrl(p.image) 
+                || `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069`;
 
             return {
               id: idx + 1,

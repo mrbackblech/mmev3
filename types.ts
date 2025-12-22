@@ -22,3 +22,38 @@ export enum LoadingState {
   SUCCESS = 'SUCCESS',
   ERROR = 'ERROR'
 }
+
+// ERPnext API Types
+export interface ERPnextProject {
+  name: string;
+  project_name?: string;
+  expected_end_date?: string;
+  status?: string;
+  notes?: string;
+  image?: string;
+  [key: string]: any;
+}
+
+export interface ERPnextLead {
+  name?: string;
+  first_name: string;
+  email_id: string;
+  mobile_no?: string;
+  custom_message?: string;
+  source?: string;
+  lead_owner?: string;
+  [key: string]: any;
+}
+
+export interface ERPnextAPIResponse<T> {
+  data: T[];
+  message?: string;
+}
+
+export interface ERPnextCreateResponse {
+  data: {
+    name: string;
+    [key: string]: any;
+  };
+  message?: string;
+}
