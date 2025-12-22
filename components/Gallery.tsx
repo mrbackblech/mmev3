@@ -39,7 +39,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status", "image"]);
+        const fields = JSON.stringify(["name", "project_name", "expected_end_date", "status"]);
         // WICHTIG: encodeURIComponent verhindert, dass Sonderzeichen im JSON den Request korrumpieren
         const url = `${CONFIG.API_URL}/api/resource/Project?fields=${encodeURIComponent(fields)}`;
         
@@ -61,7 +61,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
         } else {
           const mappedProjects: GalleryImage[] = data.map((p: any, idx: number) => ({
             id: idx + 1,
-            url: p.image || `https://picsum.photos/1600/900?random=${idx + 50}`,
+            url: p.image ,//|| `https://picsum.photos/1600/900?random=${idx + 50}`,
             title: p.project_name || "MM Projekt",
             category: p.status || "Event",
             location: "Exklusiv-Location",
