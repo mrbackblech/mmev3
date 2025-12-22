@@ -46,12 +46,14 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
           setDisplayImages([...FALLBACK_IMAGES, ...FALLBACK_IMAGES, ...FALLBACK_IMAGES]);
         } else {
           const mappedProjects: GalleryImage[] = data.map((p, idx: number) => {
-            const fullImageUrl = erpnextService.getImageUrl(p.image) 
-                || `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069`;
+            // Hinweis: image-Feld wird nicht von der API zurückgegeben (nicht erlaubt in Abfrage)
+            // Falls Bilder benötigt werden, kann getProject(p.name) für einzelne Projekte verwendet werden
+            const fullImageUrl = p.image ? erpnextService.getImageUrl(p.image) : null;
+            const imageUrl = fullImageUrl || `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069`;
 
             return {
               id: idx + 1,
-              url: fullImageUrl,
+              url: imageUrl,
               title: p.project_name || "MM Projekt",
               category: p.status || "Event",
               location: "Exklusiv-Location",

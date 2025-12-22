@@ -59,7 +59,9 @@ class ERPnextService {
    */
   async getProjects(fields?: string[]): Promise<ERPnextProject[]> {
     try {
-      const defaultFields = ['name', 'project_name', 'expected_end_date', 'status', 'notes', 'image'];
+      // Hinweis: 'image' Feld ist nicht in der Liste, da ERPnext es nicht in der API-Abfrage erlaubt
+      // Für Bilder muss ein separater API-Call für einzelne Projekte gemacht werden
+      const defaultFields = ['name', 'project_name', 'expected_end_date', 'status', 'notes'];
       const fieldsToFetch = fields || defaultFields;
       const fieldsParam = JSON.stringify(fieldsToFetch);
       
@@ -79,6 +81,7 @@ class ERPnextService {
    * Ruft ein einzelnes Projekt anhand des Namens ab
    * @param projectName Der Name des Projekts
    * @returns Das Projekt oder null wenn nicht gefunden
+   * Hinweis: Bei einzelnen Projekten werden alle Felder inkl. 'image' zurückgegeben
    */
   async getProject(projectName: string): Promise<ERPnextProject | null> {
     try {
@@ -92,6 +95,34 @@ class ERPnextService {
       console.error(`Error fetching project ${projectName} from ERPnext:`, error);
       throw error;
     }
+  }
+
+  /**
+   * Ruft Bilder für mehrere Projekte ab (nutzt getProject für jedes Projekt)
+   * @param projectNames Array von Projekt-Namen
+   * @returns Map von Projekt-Namen zu Bild-URLs
+   */
+  async getProjectImages(projectNames: string[]): Promise<Map<string, string | null>> {
+    const imageMap = new Map<string, string | null>();
+    
+    // Parallel alle Projekte abrufen
+    const promises = projectNames.map(async (name) => {
+      try {
+        const project = await this.getProject(name);
+        const imageUrl = project?.image ? this.getImageUrl(project.image) : null;
+        return { name, imageUrl };
+      } catch (error) {
+        console.warn(`Could not fetch image for project ${name}:`, error);
+        return { name, imageUrl: null };
+      }
+    });
+
+    const results = await Promise.all(promises);
+    results.forEach(({ name, imageUrl }) => {
+      imageMap.set(name, imageUrl);
+    });
+
+    return imageMap;
   }
 
   /**
