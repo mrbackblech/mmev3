@@ -67,7 +67,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
             location: "Exklusiv-Location",
             date: p.expected_end_date ? new Date(p.expected_end_date).toLocaleDateString('de-DE') : "In Planung",
             description: p.notes || "Ein maßgeschneidertes Event-Konzept von MM EVENT.",
-            highlights: ["Premium Service", "Individuelle Planung"],
+            highlights: ["Premium Service", "Individuelle X Planung"],
             additionalImages: []
           }));
           setProjects(mappedProjects);

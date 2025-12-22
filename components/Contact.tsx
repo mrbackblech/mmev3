@@ -34,7 +34,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
           email_id: email,
           mobile_no: phone,
           custom_message: custom_message, // Geändert zu custom_message laut User-Feedback
-          lead_owner: "MM Event Website",
+          //lead_owner: "MM Event Website",
           source: "Webseite"
         }),
       });
