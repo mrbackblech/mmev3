@@ -146,6 +146,47 @@ class ERPnextService {
   }
 
   /**
+   * Ruft verfügbare Lead Source-Werte von ERPnext ab
+   * @returns Array von Source-Namen oder null wenn nicht verfügbar
+   */
+  async getLeadSources(): Promise<string[] | null> {
+    try {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:148',message:'getLeadSources entry',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
+      // Versuche verschiedene mögliche Doctype-Namen für Lead Sources
+      const possibleDoctypes = ['Lead Source', 'Source', 'LeadSource'];
+      for (const doctype of possibleDoctypes) {
+        try {
+          const endpoint = `/api/resource/${doctype}?fields=["name"]`;
+          const response = await this.request<ERPnextAPIResponse<{name: string}>>(endpoint, {
+            method: 'GET',
+          });
+          // #region agent log
+          fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:158',message:'getLeadSources success',data:{doctype,sourceNames:response.data?.map(d=>d.name)||[]},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D'})}).catch(()=>{});
+          // #endregion
+          return response.data?.map(d => d.name) || [];
+        } catch (e) {
+          // #region agent log
+          fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:164',message:'getLeadSources doctype failed',data:{doctype,error:String(e)},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D'})}).catch(()=>{});
+          // #endregion
+          continue;
+        }
+      }
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:170',message:'getLeadSources no valid doctype found',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
+      return null;
+    } catch (error) {
+      // #region agent log
+      const errorData = error instanceof Error ? {message:error.message} : {error:String(error)};
+      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:175',message:'getLeadSources error',data:errorData,timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
+      return null;
+    }
+  }
+
+  /**
    * Erstellt einen neuen Lead in ERPnext
    * @param leadData Die Lead-Daten
    * @returns Die erstellte Lead-Response
@@ -153,26 +194,44 @@ class ERPnextService {
   async createLead(leadData: ERPnextLead): Promise<ERPnextCreateResponse> {
     try {
       // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:133',message:'createLead entry',data:{leadData,sourceValue:leadData.source},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C'})}).catch(()=>{});
+      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:185',message:'createLead entry',data:{leadData,sourceValue:leadData.source},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
       // #endregion
+      
+      // Prüfe, ob source-Wert existiert, wenn gesetzt
+      let finalLeadData = { ...leadData };
+      if (leadData.source) {
+        const sources = await this.getLeadSources();
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:192',message:'Source validation check',data:{requestedSource:leadData.source,availableSources:sources,sourceExists:sources?.includes(leadData.source)},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
+        // #endregion
+        if (sources && !sources.includes(leadData.source)) {
+          // Source-Wert existiert nicht - entferne das Feld
+          // #region agent log
+          fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:196',message:'Source value not found, removing field',data:{invalidSource:leadData.source},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
+          // #endregion
+          const { source, ...dataWithoutSource } = finalLeadData;
+          finalLeadData = dataWithoutSource;
+        }
+      }
+      
       const endpoint = '/api/resource/Lead';
-      const requestBody = JSON.stringify(leadData);
+      const requestBody = JSON.stringify(finalLeadData);
       // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:137',message:'Request body before send',data:{endpoint,requestBody},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C'})}).catch(()=>{});
+      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:203',message:'Request body before send (after source validation)',data:{endpoint,requestBody},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
       // #endregion
       const response = await this.request<ERPnextCreateResponse>(endpoint, {
         method: 'POST',
         body: requestBody,
       });
       // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:143',message:'createLead success',data:{response},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C'})}).catch(()=>{});
+      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:210',message:'createLead success',data:{response},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
       // #endregion
 
       return response;
     } catch (error) {
       // #region agent log
       const errorData = error instanceof Error ? {message:error.message,stack:error.stack} : {error:String(error)};
-      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:149',message:'createLead error',data:errorData,timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C'})}).catch(()=>{});
+      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:216',message:'createLead error',data:errorData,timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
       // #endregion
       console.error('Error creating lead in ERPnext:', error);
       throw error;
