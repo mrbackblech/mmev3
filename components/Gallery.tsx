@@ -45,11 +45,13 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
           setProjects(FALLBACK_IMAGES);
           setDisplayImages([...FALLBACK_IMAGES, ...FALLBACK_IMAGES, ...FALLBACK_IMAGES]);
         } else {
+          // Bilder separat laden
+          const projectNames = data.map(p => p.name);
+          const imageMap = await erpnextService.getProjectImages(projectNames);
+
           const mappedProjects: GalleryImage[] = data.map((p, idx: number) => {
-            // Hinweis: image-Feld wird nicht von der API zurückgegeben (nicht erlaubt in Abfrage)
-            // Falls Bilder benötigt werden, kann getProject(p.name) für einzelne Projekte verwendet werden
-            const fullImageUrl = p.image ? erpnextService.getImageUrl(p.image) : null;
-            const imageUrl = fullImageUrl || `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069`;
+            const projectImageUrl = imageMap.get(p.name);
+            const imageUrl = projectImageUrl || `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop`;
 
             return {
               id: idx + 1,

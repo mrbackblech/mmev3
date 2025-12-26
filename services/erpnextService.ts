@@ -156,7 +156,7 @@ class ERPnextService {
     const promises = projectNames.map(async (name) => {
       try {
         const project = await this.getProject(name);
-        const imageUrl = project?.image ? this.getImageUrl(project.image) : null;
+        const imageUrl = project?.custom_image ? this.getImageUrl(project.custom_image) : null;
         return { name, imageUrl };
       } catch (error) {
         console.warn(`Could not fetch image for project ${name}:`, error);
