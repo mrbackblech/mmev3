@@ -37,6 +37,7 @@ export interface ERPnextProject {
 export interface ERPnextLead {
   name?: string;
   company_name: string;
+  organization_lead?: number;
   email_id: string;
   mobile_no?: string;
   custom_message?: string;
