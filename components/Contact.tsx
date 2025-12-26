@@ -25,10 +25,10 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
     try {
       // #region agent log
-      // Sende nur Organisationsfelder
+      // Versuche nur Personenfelder zu senden
       const leadData = {
-        company_name: name,
-        organization_lead: 1,
+        first_name: name.split(' ')[0],
+        last_name: name.split(' ').slice(1).join(' ') || name.split(' ')[0],
         email_id: email,
         mobile_no: phone,
         custom_message: custom_message,
