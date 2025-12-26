@@ -25,7 +25,10 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
     try {
       // #region agent log
+      // Versuche sowohl Personen- als auch Organisationsfelder zu senden
       const leadData = {
+        first_name: name.split(' ')[0],
+        last_name: name.split(' ').slice(1).join(' ') || name.split(' ')[0], // Fallback für einzelne Namen
         company_name: name,
         organization_lead: 1,
         email_id: email,

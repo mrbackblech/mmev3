@@ -235,11 +235,10 @@ class ERPnextService {
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:192',message:'Source validation check',data:{requestedSource:leadData.source,availableSources:sources,sourceExists:sources?.includes(leadData.source)},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
         // #endregion
-        // Wenn sources null ist (keine Berechtigung) oder source nicht in der Liste ist, entferne das Feld
-        if (sources === null || (sources && !sources.includes(leadData.source))) {
-          // Source-Wert existiert nicht oder kann nicht validiert werden - entferne das Feld
+        if (sources && !sources.includes(leadData.source)) {
+          // Source-Wert existiert nicht - entferne das Feld
           // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:196',message:'Source value not found or cannot be validated, removing field',data:{invalidSource:leadData.source,reason:sources===null?'no permission':'source not found'},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
+          fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:196',message:'Source value not found, removing field',data:{invalidSource:leadData.source},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
           // #endregion
           const { source, ...dataWithoutSource } = finalLeadData;
           finalLeadData = dataWithoutSource;
