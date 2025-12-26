@@ -26,7 +26,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
     try {
       // #region agent log
       const leadData = {
-        first_name: name,
+        lead_name: name,
         email_id: email,
         mobile_no: phone,
         custom_message: custom_message,

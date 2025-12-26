@@ -36,7 +36,7 @@ export interface ERPnextProject {
 
 export interface ERPnextLead {
   name?: string;
-  first_name: string;
+  lead_name: string;
   email_id: string;
   mobile_no?: string;
   custom_message?: string;
