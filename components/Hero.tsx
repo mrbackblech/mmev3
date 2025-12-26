@@ -45,16 +45,26 @@ export const Hero: React.FC = () => {
 
         <button 
           onClick={handleScrollToContact}
-          className="inline-block bg-gold-600 hover:bg-gold-500 text-white font-bold py-4 px-10 rounded-sm transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] uppercase tracking-widest text-sm"
+          className="inline-block bg-gold-600 hover:bg-gold-500 focus:bg-gold-500 text-white font-bold py-4 px-10 rounded-sm transition-all duration-300 transform hover:scale-105 focus:scale-105 hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] focus:shadow-[0_0_20px_rgba(212,175,55,0.3)] focus:outline-none focus:ring-4 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 uppercase tracking-widest text-sm"
+          aria-label="Zum Kontaktformular scrollen"
         >
           Event Planen
         </button>
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-slate-500">
-        <ArrowDown size={24} />
-      </div>
+      <button
+        onClick={() => {
+          const gallerySection = document.getElementById('gallery');
+          if (gallerySection) {
+            gallerySection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-slate-400 hover:text-slate-300 focus:text-slate-300 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-full p-2"
+        aria-label="Zu den Projekten scrollen"
+      >
+        <ArrowDown size={24} aria-hidden="true" />
+      </button>
     </div>
   );
 };

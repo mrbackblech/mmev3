@@ -250,16 +250,18 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
       <div className="relative w-full group/carousel overflow-hidden">
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-between px-4 md:px-12">
            <button 
-              className="pointer-events-auto bg-slate-900/50 hover:bg-gold-500 text-white p-3 rounded-full backdrop-blur-sm border border-slate-600 transition-all opacity-0 group-hover/carousel:opacity-100"
+              className="pointer-events-auto bg-slate-900/50 hover:bg-gold-500 focus:bg-gold-500 text-white p-3 rounded-full backdrop-blur-sm border border-slate-600 transition-all opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900"
               onClick={() => handleScrollNav('prev')}
-           >
-              <ChevronLeft size={32} />
+              aria-label="Vorheriges Projekt anzeigen"
+            >
+              <ChevronLeft size={32} aria-hidden="true" />
            </button>
            <button 
-              className="pointer-events-auto bg-slate-900/50 hover:bg-gold-500 text-white p-3 rounded-full backdrop-blur-sm border border-slate-600 transition-all opacity-0 group-hover/carousel:opacity-100"
+              className="pointer-events-auto bg-slate-900/50 hover:bg-gold-500 focus:bg-gold-500 text-white p-3 rounded-full backdrop-blur-sm border border-slate-600 transition-all opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900"
               onClick={() => handleScrollNav('next')}
-           >
-              <ChevronRight size={32} />
+              aria-label="Nächstes Projekt anzeigen"
+            >
+              <ChevronRight size={32} aria-hidden="true" />
            </button>
         </div>
         <div 
@@ -274,9 +276,18 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
             <div 
               key={`${img.id}-${index}`}
               onClick={() => handleImageClick(index)}
-              className={`flex-none relative shadow-2xl rounded-sm overflow-hidden border border-slate-800 cursor-pointer transition-all duration-500 ${isMobile ? "w-[70vw] h-[30vh] even:translate-x-[50%]" : "w-[85vw] md:w-[60vw] aspect-[16/9]"} hover:scale-[1.01]`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleImageClick(index);
+                }
+              }}
+              tabIndex={0}
+              role="button"
+              aria-label={`Projekt ${img.title} öffnen, Kategorie: ${img.category}`}
+              className={`flex-none relative shadow-2xl rounded-sm overflow-hidden border border-slate-800 cursor-pointer transition-all duration-500 ${isMobile ? "w-[70vw] h-[30vh] even:translate-x-[50%]" : "w-[85vw] md:w-[60vw] aspect-[16/9]"} hover:scale-[1.01] focus:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900`}
             >
-              <img src={img.url} alt={img.title} loading="lazy" className="w-full h-full object-cover pointer-events-none select-none" />
+              <img src={img.url} alt={`${img.title} - ${img.category} Event`} loading="lazy" className="w-full h-full object-cover pointer-events-none select-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
               <div className="absolute bottom-0 left-0 w-full p-4 md:p-8">
                 <span className="bg-gold-500/90 text-slate-900 text-[10px] md:text-xs font-bold uppercase tracking-widest py-1 px-2 md:px-3 mb-2 md:mb-3 rounded-sm inline-block">{img.category}</span>
@@ -287,21 +298,45 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
         </div>
       </div>
       {selectedProjectIndex !== null && selectedImage && (
-        <div className={`fixed inset-0 z-50 bg-slate-900 overflow-y-auto animate-[fadeIn_0.4s_ease-out]`}>
+        <div 
+          className={`fixed inset-0 z-50 bg-slate-900 overflow-y-auto animate-[fadeIn_0.4s_ease-out]`}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-title"
+          aria-describedby="project-description"
+        >
             <div className="fixed top-0 left-0 w-full z-[60] p-6 flex justify-between items-start pointer-events-none">
                 <div className="bg-slate-900/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 opacity-0 md:opacity-100 transition-opacity"><span className="text-white text-xs font-bold uppercase tracking-widest">{selectedImage.category}</span></div>
                 <div className="flex gap-4 pointer-events-auto">
-                    <button onClick={() => navigateProject('prev')} className="bg-black/40 hover:bg-gold-600 text-white p-3 rounded-full backdrop-blur-md border border-white/10 transition-all hidden md:block"><ChevronLeft size={24} /></button>
-                    <button onClick={() => navigateProject('next')} className="bg-black/40 hover:bg-gold-600 text-white p-3 rounded-full backdrop-blur-md border border-white/10 transition-all hidden md:block"><ChevronRight size={24} /></button>
-                    <button onClick={closeModal} className="bg-black/40 hover:bg-red-500/80 text-white p-3 rounded-full backdrop-blur-md border border-white/10 transition-all hover:rotate-90"><X size={24} /></button>
+                    <button 
+                      onClick={() => navigateProject('prev')} 
+                      className="bg-black/40 hover:bg-gold-600 focus:bg-gold-600 text-white p-3 rounded-full backdrop-blur-md border border-white/10 transition-all hidden md:block focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                      aria-label="Vorheriges Projekt"
+                    >
+                      <ChevronLeft size={24} aria-hidden="true" />
+                    </button>
+                    <button 
+                      onClick={() => navigateProject('next')} 
+                      className="bg-black/40 hover:bg-gold-600 focus:bg-gold-600 text-white p-3 rounded-full backdrop-blur-md border border-white/10 transition-all hidden md:block focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                      aria-label="Nächstes Projekt"
+                    >
+                      <ChevronRight size={24} aria-hidden="true" />
+                    </button>
+                    <button 
+                      onClick={closeModal} 
+                      className="bg-black/40 hover:bg-red-500/80 focus:bg-red-500/80 text-white p-3 rounded-full backdrop-blur-md border border-white/10 transition-all hover:rotate-90 focus:rotate-90 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                      aria-label="Projektdetails schließen"
+                    >
+                      <X size={24} aria-hidden="true" />
+                    </button>
                 </div>
             </div>
             <div className="relative w-full h-[60vh] md:h-[85vh] shrink-0">
-                <img src={selectedImage.url} alt={selectedImage.title} className="w-full h-full object-cover" />
+                <img src={selectedImage.url} alt={`${selectedImage.title} - Hauptbild des ${selectedImage.category} Events`} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 w-full p-6 md:p-16 max-w-7xl mx-auto">
                     <div className="animate-[slideUp_0.6s_ease-out]">
-                        <h2 className="text-4xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-6 drop-shadow-2xl leading-tight">{selectedImage.title}</h2>
+                        <h2 id="project-title" className="text-4xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-6 drop-shadow-2xl leading-tight">{selectedImage.title}</h2>
                         <div className="flex flex-wrap gap-6 text-slate-300 text-sm uppercase tracking-widest border-t border-white/10 pt-6 inline-flex">
                             {selectedImage.location && <div className="flex items-center gap-2"><MapPin size={16} className="text-gold-500" /> {selectedImage.location}</div>}
                             {selectedImage.date && <div className="flex items-center gap-2"><Calendar size={16} className="text-gold-500" /> {selectedImage.date}</div>}
@@ -313,7 +348,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
                     <div className="lg:col-span-8">
                          <h3 className="text-gold-500 font-serif text-2xl mb-6">Das Konzept</h3>
-                         <p className="text-lg md:text-xl text-slate-300 leading-relaxed font-light">{selectedImage.description}</p>
+                         <p id="project-description" className="text-lg md:text-xl text-slate-300 leading-relaxed font-light">{selectedImage.description}</p>
                     </div>
                     <div className="lg:col-span-4 bg-slate-800/30 p-8 rounded-sm border border-slate-800 h-fit">
                         <h3 className="text-white font-serif text-xl mb-6">Event Highlights</h3>
@@ -329,7 +364,13 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
                 </div>
                 <div className="text-center pb-12 pt-12 border-t border-slate-800">
                     <h3 className="text-3xl font-serif text-white mb-8">Interesse geweckt?</h3>
-                    <button onClick={handleInquireClick} className="bg-gold-600 hover:bg-gold-500 text-white font-bold py-5 px-16 rounded-sm uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(197,160,40,0.3)] hover:scale-105 transition-all">Dieses Projekt Anfragen</button>
+                    <button 
+                      onClick={handleInquireClick} 
+                      className="bg-gold-600 hover:bg-gold-500 focus:bg-gold-500 text-white font-bold py-5 px-16 rounded-sm uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(197,160,40,0.3)] hover:scale-105 focus:scale-105 focus:outline-none focus:ring-4 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all"
+                      aria-label={`Projekt ${selectedImage.title} anfragen`}
+                    >
+                      Dieses Projekt Anfragen
+                    </button>
                 </div>
             </div>
         </div>

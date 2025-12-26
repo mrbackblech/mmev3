@@ -49,13 +49,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         </a>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-8">
+        <div className="hidden md:flex space-x-8" role="navigation" aria-label="Hauptnavigation">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="text-sm uppercase tracking-widest text-slate-300 hover:text-gold-500 transition-colors duration-300 font-medium"
+              className="text-sm uppercase tracking-widest text-slate-300 hover:text-gold-500 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded transition-colors duration-300 font-medium"
             >
               {link.name}
             </a>
@@ -64,23 +64,31 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white hover:text-gold-500 transition-colors"
+          className="md:hidden text-white hover:text-gold-500 transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-menu"
         >
-          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          {isMobileMenuOpen ? <X size={28} aria-hidden="true" /> : <Menu size={28} aria-hidden="true" />}
         </button>
       </div>
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-slate-900 shadow-xl border-t border-slate-800">
+        <div 
+          id="mobile-menu"
+          className="md:hidden absolute top-full left-0 w-full bg-slate-900 shadow-xl border-t border-slate-800"
+          role="menu"
+        >
           <div className="flex flex-col py-4">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="px-6 py-3 text-slate-300 hover:bg-slate-800 hover:text-gold-500 uppercase text-sm tracking-widest"
+                className="px-6 py-3 text-slate-300 hover:bg-slate-800 hover:text-gold-500 focus:bg-slate-800 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-inset uppercase text-sm tracking-widest"
+                role="menuitem"
               >
                 {link.name}
               </a>

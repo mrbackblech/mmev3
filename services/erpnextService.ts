@@ -50,9 +50,32 @@ class ERPnextService {
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:42',message:'Response error text',data:{status:response.status,errorText},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C'})}).catch(()=>{});
         // #endregion
-        throw new Error(
-          `ERPnext API Error (${response.status}): ${errorText || response.statusText}`
-        );
+        
+        // Spezifische Fehlerbehandlung für verschiedene HTTP-Status-Codes
+        let errorMessage: string;
+        switch (response.status) {
+          case 400:
+            errorMessage = `Bad Request: Ungültige Parameter oder fehlerhafte Anfrage. ${errorText || response.statusText}`;
+            break;
+          case 401:
+            errorMessage = `Unauthorized: Authentifizierungsfehler. ${errorText || response.statusText}`;
+            break;
+          case 403:
+            errorMessage = `Forbidden: Keine Berechtigung für diese Ressource. ${errorText || response.statusText}`;
+            break;
+          case 404:
+            errorMessage = `Not Found: Die angeforderte Ressource wurde nicht gefunden. ${errorText || response.statusText}`;
+            break;
+          case 500:
+          case 502:
+          case 503:
+            errorMessage = `Server Error: ERPNext Server-Fehler (${response.status}). ${errorText || response.statusText}`;
+            break;
+          default:
+            errorMessage = `ERPnext API Error (${response.status}): ${errorText || response.statusText}`;
+        }
+        
+        throw new Error(errorMessage);
       }
 
       const jsonResponse = await response.json();
@@ -83,9 +106,13 @@ class ERPnextService {
       // Für Bilder muss ein separater API-Call für einzelne Projekte gemacht werden
       const defaultFields = ['name', 'project_name', 'expected_end_date', 'status', 'notes'];
       const fieldsToFetch = fields || defaultFields;
+      // ERPNext erwartet fields als JSON-Array im Query-String
+      // Format: fields=["field1","field2"]
       const fieldsParam = JSON.stringify(fieldsToFetch);
+      const params = new URLSearchParams();
+      params.set('fields', fieldsParam);
       
-      const endpoint = `/api/resource/Project?fields=${encodeURIComponent(fieldsParam)}`;
+      const endpoint = `/api/resource/Project?${params.toString()}`;
       const response = await this.request<ERPnextAPIResponse<ERPnextProject>>(endpoint, {
         method: 'GET',
       });
@@ -158,7 +185,11 @@ class ERPnextService {
       const possibleDoctypes = ['Lead Source', 'Source', 'LeadSource'];
       for (const doctype of possibleDoctypes) {
         try {
-          const endpoint = `/api/resource/${doctype}?fields=["name"]`;
+          // Konsistentes Format wie bei getProjects()
+          const fieldsParam = JSON.stringify(['name']);
+          const params = new URLSearchParams();
+          params.set('fields', fieldsParam);
+          const endpoint = `/api/resource/${encodeURIComponent(doctype)}?${params.toString()}`;
           const response = await this.request<ERPnextAPIResponse<{name: string}>>(endpoint, {
             method: 'GET',
           });
@@ -204,10 +235,11 @@ class ERPnextService {
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:192',message:'Source validation check',data:{requestedSource:leadData.source,availableSources:sources,sourceExists:sources?.includes(leadData.source)},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
         // #endregion
-        if (sources && !sources.includes(leadData.source)) {
-          // Source-Wert existiert nicht - entferne das Feld
+        // Wenn sources null ist (keine Berechtigung) oder source nicht in der Liste ist, entferne das Feld
+        if (sources === null || (sources && !sources.includes(leadData.source))) {
+          // Source-Wert existiert nicht oder kann nicht validiert werden - entferne das Feld
           // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:196',message:'Source value not found, removing field',data:{invalidSource:leadData.source},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
+          fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'erpnextService.ts:196',message:'Source value not found or cannot be validated, removing field',data:{invalidSource:leadData.source,reason:sources===null?'no permission':'source not found'},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D,E'})}).catch(()=>{});
           // #endregion
           const { source, ...dataWithoutSource } = finalLeadData;
           finalLeadData = dataWithoutSource;

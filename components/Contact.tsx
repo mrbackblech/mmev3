@@ -59,7 +59,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
   return (
     <div className="container mx-auto px-6 py-12 lg:py-20">
       <div className="w-full">
-        <span className="text-gold-500 text-[8px] uppercase tracking-[0.5em] font-bold mb-6 block">KONTAKT</span>
+        <span className="text-gold-500 text-[8px] uppercase tracking-[0.5em] font-bold mb-6 block" aria-label="Kontaktbereich">KONTAKT</span>
         <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.1] mb-16 lg:mb-24 max-w-2xl">
           Starten wir den <br />
           <span className="italic text-gold-500">Dialog.</span>
@@ -69,7 +69,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
           <div className="lg:col-span-6">
             <form className="space-y-8" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <label htmlFor="name" className="block text-[8px] uppercase tracking-[0.2em] text-slate-500 font-bold">NAME</label>
+                <label htmlFor="name" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">NAME</label>
                 <input 
                   type="text" 
                   id="name" 
@@ -77,12 +77,13 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   autoComplete="name"
-                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none transition-all font-serif text-base"
+                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
+                  aria-required="true"
                 />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-[8px] uppercase tracking-[0.2em] text-slate-500 font-bold">E-MAIL ADRESSE</label>
+                <label htmlFor="email" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">E-MAIL ADRESSE</label>
                 <input 
                   type="email" 
                   id="email" 
@@ -90,38 +91,41 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
-                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none transition-all font-serif text-base"
+                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
+                  aria-required="true"
                 />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="phone" className="block text-[8px] uppercase tracking-[0.2em] text-slate-500 font-bold">TELEFON (OPTIONAL)</label>
+                <label htmlFor="phone" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">TELEFON (OPTIONAL)</label>
                 <input 
                   type="tel" 
                   id="phone" 
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   autoComplete="tel"
-                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none transition-all font-serif text-base"
+                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
                 />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="message" className="block text-[8px] uppercase tracking-[0.2em] text-slate-500 font-bold">ERZÄHLEN SIE UNS VON IHRER VISION</label>
+                <label htmlFor="message" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">ERZÄHLEN SIE UNS VON IHRER VISION</label>
                 <textarea 
                   id="message" 
                   rows={2} 
                   required
                   value={custom_message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none transition-all resize-none font-serif text-base"
+                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all resize-none font-serif text-base"
+                  aria-required="true"
                 ></textarea>
               </div>
 
               <button 
                 type="submit" 
                 disabled={loading}
-                className="flex items-center gap-2 text-white uppercase tracking-[0.4em] text-[10px] font-bold group pt-4 disabled:opacity-50"
+                className="flex items-center gap-2 text-white uppercase tracking-[0.4em] text-[10px] font-bold group pt-4 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded"
+                aria-label={loading ? "Nachricht wird gesendet" : "Kontaktformular absenden"}
               >
                 {loading ? (
                   <>
