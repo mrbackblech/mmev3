@@ -25,19 +25,21 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
     try {
       // #region agent log
-      // Minimaler Lead-Test - nur erforderliche Felder
+      // Minimaler Lead - nur erforderliche Felder (notes ist ein Table-Feld!)
       const nameParts = name.trim().split(/\s+/);
       const leadData = {
         first_name: nameParts[0] || 'Kontakt',
         last_name: nameParts.slice(1).join(' ') || 'Anfrage',
         email_id: email,
-        source: "Webseite",
-        notes: custom_message || 'Über Kontaktformular angefragt'
+        source: "Webseite"
       };
       // Optional: mobile_no nur hinzufügen wenn vorhanden
       if (phone && phone.trim()) {
         leadData.mobile_no = phone.trim();
       }
+
+      // Nachricht als separate Info loggen
+      console.log('Kontaktformular Nachricht:', custom_message);
       fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Contact.tsx:27',message:'Lead data before API call',data:leadData,timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C'})}).catch(()=>{});
       // #endregion
       await erpnextService.createLead(leadData);
