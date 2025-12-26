@@ -24,7 +24,6 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
     setLoading(true);
 
     try {
-      // #region agent log
       // Minimaler Lead - nur erforderliche Felder (notes ist ein Table-Feld!)
       const nameParts = name.trim().split(/\s+/);
       const leadData = {
@@ -40,23 +39,15 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
       // Nachricht als separate Info loggen
       console.log('Kontaktformular Nachricht:', custom_message);
-      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Contact.tsx:27',message:'Lead data before API call',data:leadData,timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C'})}).catch(()=>{});
-      // #endregion
       await erpnextService.createLead(leadData);
 
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Contact.tsx:35',message:'Lead created successfully',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C'})}).catch(()=>{});
-      // #endregion
       alert("Vielen Dank für Ihre Nachricht. Wir haben Ihre Anfrage erhalten und werden uns in Kürze bei Ihnen melden.");
       setName('');
       setEmail('');
       setPhone('');
       setMessage('');
     } catch (error) {
-      // #region agent log
       const errorData = error instanceof Error ? {message:error.message,stack:error.stack} : {error:String(error)};
-      fetch('http://127.0.0.1:7242/ingest/ee4aaa02-a2f5-467f-aea6-17dcce255ef4',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Contact.tsx:41',message:'Error creating lead',data:errorData,timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C'})}).catch(()=>{});
-      // #endregion
       console.error("Error creating lead:", error);
       alert("Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt per E-Mail.");
     } finally {
