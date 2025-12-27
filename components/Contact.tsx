@@ -2,25 +2,71 @@ import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { erpnextService } from '../services/erpnextService';
 
+/**
+ * Props für die Contact-Komponente
+ */
 interface ContactProps {
+  /** Optionale Initialnachricht für das Formular */
   initialMessage?: string;
 }
 
+/**
+ * Status des Kontaktformulars
+ */
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
+/**
+ * Event-Typ Optionen für das Dropdown
+ */
+const EVENT_TYPE_OPTIONS = [
+  { value: '', label: 'Bitte wählen...' },
+  { value: 'Hochzeit', label: 'Hochzeit' },
+  { value: 'Firmenevent', label: 'Firmenevent' },
+  { value: 'Geburtstag', label: 'Geburtstag' },
+  { value: 'Jubiläum', label: 'Jubiläum' },
+  { value: 'Gala-Dinner', label: 'Gala-Dinner' },
+  { value: 'Konferenz', label: 'Konferenz' },
+  { value: 'Sonstiges', label: 'Sonstiges' },
+] as const;
+
+/**
+ * Budget-Optionen für das Dropdown
+ */
+const BUDGET_OPTIONS = [
+  { value: '', label: 'Bitte wählen...' },
+  { value: 'Bis 5.000€', label: 'Bis 5.000€' },
+  { value: '5.000€ - 15.000€', label: '5.000€ - 15.000€' },
+  { value: '15.000€ - 30.000€', label: '15.000€ - 30.000€' },
+  { value: 'Über 30.000€', label: 'Über 30.000€' },
+  { value: 'Auf Anfrage', label: 'Auf Anfrage' },
+] as const;
+
+/**
+ * Kontakt-Komponente mit erweitertem Formular für Event-Anfragen
+ *
+ * Features:
+ * - Erweiterte Felder für Event-Planung
+ * - Clientseitige Validierung
+ * - Status-Management mit visuellen Feedback
+ * - Integration mit ERPNext für Lead-Erstellung
+ */
 export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
-  const [custom_message, setMessage] = useState(initialMessage);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [eventType, setEventType] = useState('');
-  const [budget, setBudget] = useState('');
-  const [preferredDate, setPreferredDate] = useState('');
-  const [guestCount, setGuestCount] = useState('');
-  const [newsletter, setNewsletter] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<FormStatus>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
+  // Formular State
+  const [message, setMessage] = useState(initialMessage); // Die Nachricht/Vision des Kunden
+  const [customerName, setCustomerName] = useState(''); // Vollständiger Name des Kunden
+  const [email, setEmail] = useState(''); // E-Mail-Adresse
+  const [phone, setPhone] = useState(''); // Telefonnummer (optional)
+
+  // Erweiterte Event-Details
+  const [eventType, setEventType] = useState(''); // Art der Veranstaltung
+  const [budget, setBudget] = useState(''); // Budget-Bereich
+  const [preferredDate, setPreferredDate] = useState(''); // Gewünschter Termin
+  const [guestCount, setGuestCount] = useState(''); // Anzahl der Gäste
+  const [newsletter, setNewsletter] = useState(false); // Newsletter-Anmeldung
+
+  // UI State
+  const [status, setStatus] = useState<FormStatus>('idle'); // Formular-Status
+  const [errorMessage, setErrorMessage] = useState(''); // Fehlermeldung
 
   useEffect(() => {
     if (initialMessage) {
@@ -28,15 +74,23 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
     }
   }, [initialMessage]);
 
-  const validateForm = () => {
-    if (!name.trim()) return "Bitte geben Sie Ihren Namen ein.";
+  /**
+   * Validiert das Formular vor dem Absenden
+   * @returns Fehler-Nachricht oder null wenn valide
+   */
+  const validateForm = (): string | null => {
+    if (!customerName.trim()) return "Bitte geben Sie Ihren Namen ein.";
     if (!email.trim()) return "Bitte geben Sie Ihre E-Mail-Adresse ein.";
     if (!email.includes('@')) return "Bitte geben Sie eine gültige E-Mail-Adresse ein.";
-    if (!custom_message.trim()) return "Bitte beschreiben Sie Ihre Vision.";
+    if (!message.trim()) return "Bitte beschreiben Sie Ihre Vision.";
     return null;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  /**
+   * Behandelt das Absenden des Kontaktformulars
+   * Validiert, sendet Daten an ERPNext und zeigt Feedback
+   */
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     const validationError = validateForm();
@@ -46,18 +100,25 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       return;
     }
 
-    setLoading(true);
     setStatus('loading');
     setErrorMessage('');
 
     try {
-      // Lead-Daten zusammenstellen
-      const nameParts = name.trim().split(/\s+/);
-      const leadData = {
+      // Lead-Daten für ERPNext zusammenstellen
+      const nameParts = customerName.trim().split(/\s+/);
+      const leadData: {
+        first_name: string;
+        last_name: string;
+        email_id: string;
+        source: string;
+        mobile_no?: string;
+        custom_message: string;
+      } = {
         first_name: nameParts[0] || 'Kontakt',
         last_name: nameParts.slice(1).join(' ') || 'Anfrage',
         email_id: email.trim(),
-        source: "Webseite"
+        source: "Webseite",
+        custom_message: "" // Wird später gesetzt
       };
 
       // Optionale Felder hinzufügen
@@ -65,25 +126,28 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
         leadData.mobile_no = phone.trim();
       }
 
-      // Erweiterte Nachricht mit allen Details zusammenstellen
-      let fullMessage = custom_message.trim();
+      // Erweiterte Nachricht mit allen Event-Details zusammenstellen
+      let fullMessage = message.trim();
+
+      // Event-spezifische Informationen hinzufügen
       if (eventType) fullMessage += `\n\nEvent-Typ: ${eventType}`;
       if (budget) fullMessage += `\n\nBudget: ${budget}`;
       if (preferredDate) fullMessage += `\n\nGewünschter Termin: ${preferredDate}`;
       if (guestCount) fullMessage += `\n\nGästezahl: ${guestCount}`;
       if (newsletter) fullMessage += `\n\nNewsletter-Anmeldung: Ja`;
 
-      // Beide message Felder hinzufügen (beide sind in ERPNext erforderlich)
+      // Nachricht in ERPNext Lead speichern
       leadData.custom_message = fullMessage;
-      leadData.custom_custom_message = fullMessage;
 
-      console.log('Lead Data:', leadData);
+      console.log('Lead Data für ERPNext:', leadData);
 
+      // Lead in ERPNext erstellen
       await erpnextService.createLead(leadData);
 
       setStatus('success');
-      // Formular zurücksetzen
-      setName('');
+
+      // Formular zurücksetzen nach erfolgreichem Versand
+      setCustomerName('');
       setEmail('');
       setPhone('');
       setMessage('');
@@ -92,92 +156,87 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       setPreferredDate('');
       setGuestCount('');
       setNewsletter(false);
-      setEventType('');
-      setBudget('');
-      setPreferredDate('');
-      setGuestCount('');
-      setNewsletter(false);
 
     } catch (error) {
-      console.error("Error creating lead:", error);
+      console.error("Fehler bei Lead-Erstellung:", error);
       setErrorMessage("Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt per E-Mail an info@mm-event.live");
       setStatus('error');
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <div className="container mx-auto px-6 py-12 lg:py-20">
       <div className="w-full">
-        <span className="text-gold-500 text-[8px] uppercase tracking-[0.5em] font-bold mb-6 block" aria-label="Kontaktbereich">KONTAKT</span>
+        <span className="text-gold-500 text-[8px] uppercase tracking-[0.5em] font-bold mb-6 block">KONTAKT</span>
         <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.1] mb-16 lg:mb-24 max-w-2xl">
           Starten wir den <br />
           <span className="italic text-gold-500">Dialog.</span>
         </h2>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 items-start gap-y-12 lg:gap-y-16">
-              <div className="lg:col-span-6">
-                {/* Status Messages */}
-                {status === 'success' && (
-                  <div className="mb-6 p-4 bg-green-900/20 border border-green-500/30 rounded-lg flex items-center gap-3">
-                    <CheckCircle className="text-green-500 flex-shrink-0" size={20} />
-                    <p className="text-green-400 text-sm">Vielen Dank für Ihre Nachricht! Wir haben Ihre Anfrage erhalten und werden uns in Kürze bei Ihnen melden.</p>
-                  </div>
-                )}
-
-                {status === 'error' && (
-                  <div className="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg flex items-center gap-3">
-                    <XCircle className="text-red-500 flex-shrink-0" size={20} />
-                    <p className="text-red-400 text-sm">{errorMessage}</p>
-                  </div>
-                )}
-
-                <form className="space-y-6 lg:space-y-8" onSubmit={handleSubmit}>
-              <div className="space-y-2">
-                <label htmlFor="name" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">NAME *</label>
-                <input
-                  type="text"
-                  id="name"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Ihr vollständiger Name"
-                  autoComplete="name"
-                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
-                  aria-required="true"
-                />
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-start gap-y-16">
+          <div className="lg:col-span-6">
+            {/* Status Messages */}
+            {status === 'success' && (
+              <div className="mb-6 p-4 bg-green-900/20 border border-green-500/30 rounded-lg flex items-center gap-3">
+                <CheckCircle className="text-green-500 flex-shrink-0" size={20} />
+                <p className="text-green-400 text-sm">Vielen Dank für Ihre Nachricht! Wir haben Ihre Anfrage erhalten und werden uns in Kürze bei Ihnen melden.</p>
               </div>
+            )}
 
-              <div className="space-y-2">
-                <label htmlFor="email" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">E-MAIL ADRESSE *</label>
-                <input
-                  type="email"
-                  id="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="ihre@email.com"
-                  autoComplete="email"
-                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
-                  aria-required="true"
-                />
+            {status === 'error' && (
+              <div className="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg flex items-center gap-3">
+                <XCircle className="text-red-500 flex-shrink-0" size={20} />
+                <p className="text-red-400 text-sm">{errorMessage}</p>
               </div>
+            )}
 
-              <div className="space-y-2">
-                <label htmlFor="phone" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">TELEFON</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+49 123 456 789"
-                  autoComplete="tel"
-                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
-                />
+            <form className="space-y-6 lg:space-y-8" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">NAME *</label>
+                  <input
+                    type="text"
+                    id="name"
+                    required
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    placeholder="Ihr vollständiger Name"
+                    autoComplete="name"
+                    className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
+                    aria-required="true"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">E-MAIL ADRESSE *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="ihre@email.com"
+                    autoComplete="email"
+                    className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
+                    aria-required="true"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="phone" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">TELEFON</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+49 123 456 789"
+                    autoComplete="tel"
+                    className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
+                  />
+                </div>
+
                 <div className="space-y-2">
                   <label htmlFor="eventType" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">EVENT-TYP</label>
                   <select
@@ -186,17 +245,16 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                     onChange={(e) => setEventType(e.target.value)}
                     className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
                   >
-                    <option value="" className="bg-slate-900">Bitte wählen...</option>
-                    <option value="Hochzeit" className="bg-slate-900">Hochzeit</option>
-                    <option value="Firmenevent" className="bg-slate-900">Firmenevent</option>
-                    <option value="Geburtstag" className="bg-slate-900">Geburtstag</option>
-                    <option value="Jubiläum" className="bg-slate-900">Jubiläum</option>
-                    <option value="Gala-Dinner" className="bg-slate-900">Gala-Dinner</option>
-                    <option value="Konferenz" className="bg-slate-900">Konferenz</option>
-                    <option value="Sonstiges" className="bg-slate-900">Sonstiges</option>
+                    {EVENT_TYPE_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value} className="bg-slate-900">
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <label htmlFor="budget" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">BUDGET</label>
                   <select
@@ -205,17 +263,14 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                     onChange={(e) => setBudget(e.target.value)}
                     className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
                   >
-                    <option value="" className="bg-slate-900">Bitte wählen...</option>
-                    <option value="Bis 5.000€" className="bg-slate-900">Bis 5.000€</option>
-                    <option value="5.000€ - 15.000€" className="bg-slate-900">5.000€ - 15.000€</option>
-                    <option value="15.000€ - 30.000€" className="bg-slate-900">15.000€ - 30.000€</option>
-                    <option value="Über 30.000€" className="bg-slate-900">Über 30.000€</option>
-                    <option value="Auf Anfrage" className="bg-slate-900">Auf Anfrage</option>
+                    {BUDGET_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value} className="bg-slate-900">
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label htmlFor="guestCount" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">GÄSTEZAHL</label>
                   <input
@@ -242,12 +297,12 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="message" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">ERZÄHLEN SIE UNS VON IHRER VISION</label>
+                <label htmlFor="message" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">ERZÄHLEN SIE UNS VON IHRER VISION *</label>
                 <textarea
                   id="message"
                   rows={4}
                   required
-                  value={custom_message}
+                  value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Beschreiben Sie Ihre Veranstaltungsidee, Wünsche und Vorstellungen..."
                   className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all resize-none font-serif text-base placeholder-slate-600"
@@ -270,11 +325,11 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
               <button
                 type="submit"
-                disabled={loading || status === 'success'}
+                disabled={status === 'success'}
                 className="flex items-center justify-center gap-2 text-white uppercase tracking-[0.3em] lg:tracking-[0.4em] text-[11px] lg:text-[10px] font-bold group pt-4 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded w-full lg:w-auto px-6 py-3"
-                aria-label={loading ? "Nachricht wird gesendet" : "Kontaktformular absenden"}
+                aria-label={status === 'loading' ? "Nachricht wird gesendet" : "Kontaktformular absenden"}
               >
-                {loading ? (
+                {status === 'loading' ? (
                   <>
                     <Loader2 size={16} className="animate-spin text-gold-500" />
                     <span>SENDET...</span>
@@ -298,8 +353,8 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
             <div className="space-y-4">
                <span className="text-slate-500 text-[8px] uppercase tracking-[0.3em] font-bold block">KONTAKT</span>
                <div className="space-y-1">
-                 <a href="mailto:hello@mmevent.com" className="text-xl md:text-2xl font-serif text-white hover:text-gold-500 transition-colors block leading-tight">hello@mmevent.com</a>
-                 <a href="tel:+490123456789" className="text-base md:text-lg font-serif text-slate-400 hover:text-white transition-colors block">+49 (0) 123 456 789</a>
+                  <a href="mailto:hello@mmevent.com" className="text-xl md:text-2xl font-serif text-white hover:text-gold-500 transition-colors block leading-tight">hello@mmevent.com</a>
+                  <a href="tel:+490123456789" className="text-base md:text-lg font-serif text-slate-400 hover:text-white transition-colors block">+49 (0) 123 456 789</a>
                </div>
             </div>
             <div className="space-y-4">
