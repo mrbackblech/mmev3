@@ -1,5 +1,5 @@
 export const CONFIG = {
-    // URL des neuen Proxy-Services
-    // Wir nutzen HTTPS, da Browser HTTP-Anfragen von HTTPS-Seiten blockieren ("Load failed").
+    // Proxy-Service für ERPNext API
+    // Läuft auf separater Domain für saubere Architektur
     API_URL: "https://erp-api.mm-event.live",
 };
