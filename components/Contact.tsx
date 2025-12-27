@@ -40,10 +40,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       // Nachricht als separate Info loggen
       console.log('Kontaktformular Nachricht:', custom_message);
 
-      // Temporär deaktiviert - API nicht verfügbar
-      console.log('Lead würde erstellt werden:', leadData);
-      alert("Vielen Dank für Ihre Nachricht. Wir haben Ihre Anfrage erhalten und werden uns in Kürze bei Ihnen melden.");
-      return;
+      await erpnextService.createLead(leadData);
 
       alert("Vielen Dank für Ihre Nachricht. Wir haben Ihre Anfrage erhalten und werden uns in Kürze bei Ihnen melden.");
       setName('');
