@@ -29,17 +29,6 @@ const EVENT_TYPE_OPTIONS = [
   { value: 'Sonstiges', label: 'Sonstiges' },
 ] as const;
 
-/**
- * Budget-Optionen für das Dropdown
- */
-const BUDGET_OPTIONS = [
-  { value: '', label: 'Bitte wählen...' },
-  { value: 'Bis 5.000€', label: 'Bis 5.000€' },
-  { value: '5.000€ - 15.000€', label: '5.000€ - 15.000€' },
-  { value: '15.000€ - 30.000€', label: '15.000€ - 30.000€' },
-  { value: 'Über 30.000€', label: 'Über 30.000€' },
-  { value: 'Auf Anfrage', label: 'Auf Anfrage' },
-] as const;
 
 /**
  * Kontakt-Komponente mit erweitertem Formular für Event-Anfragen
@@ -57,10 +46,8 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
   const [email, setEmail] = useState(''); // E-Mail-Adresse
   const [phone, setPhone] = useState(''); // Telefonnummer (optional)
 
-  // Erweiterte Event-Details
+  // Optionale Event-Details
   const [eventType, setEventType] = useState(''); // Art der Veranstaltung
-  const [budget, setBudget] = useState(''); // Budget-Bereich
-  const [preferredDate, setPreferredDate] = useState(''); // Gewünschter Termin
   const [guestCount, setGuestCount] = useState(''); // Anzahl der Gäste
   const [newsletter, setNewsletter] = useState(false); // Newsletter-Anmeldung
 
@@ -126,15 +113,18 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
         leadData.mobile_no = phone.trim();
       }
 
-      // Erweiterte Nachricht mit allen Event-Details zusammenstellen
+      // Nachricht mit Event-Details zusammenstellen
       let fullMessage = message.trim();
+
+      console.log('Ursprüngliche Nachricht:', message);
+      console.log('Getrimmte Nachricht:', fullMessage);
 
       // Event-spezifische Informationen hinzufügen
       if (eventType) fullMessage += `\n\nEvent-Typ: ${eventType}`;
-      if (budget) fullMessage += `\n\nBudget: ${budget}`;
-      if (preferredDate) fullMessage += `\n\nGewünschter Termin: ${preferredDate}`;
       if (guestCount) fullMessage += `\n\nGästezahl: ${guestCount}`;
       if (newsletter) fullMessage += `\n\nNewsletter-Anmeldung: Ja`;
+
+      console.log('Vollständige Nachricht:', fullMessage);
 
       // Nachricht in ERPNext Lead speichern
       leadData.custom_message = fullMessage;
@@ -152,8 +142,6 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       setPhone('');
       setMessage('');
       setEventType('');
-      setBudget('');
-      setPreferredDate('');
       setGuestCount('');
       setNewsletter(false);
 
@@ -223,77 +211,46 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="phone" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">TELEFON</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+49 123 456 789"
-                    autoComplete="tel"
-                    className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="eventType" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">EVENT-TYP</label>
-                  <select
-                    id="eventType"
-                    value={eventType}
-                    onChange={(e) => setEventType(e.target.value)}
-                    className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
-                  >
-                    {EVENT_TYPE_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value} className="bg-slate-900">
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div className="space-y-2">
+                <label htmlFor="phone" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">TELEFON</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+49 123 456 789"
+                  autoComplete="tel"
+                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
+                />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="budget" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">BUDGET</label>
-                  <select
-                    id="budget"
-                    value={budget}
-                    onChange={(e) => setBudget(e.target.value)}
-                    className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
-                  >
-                    {BUDGET_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value} className="bg-slate-900">
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div className="space-y-2">
+                <label htmlFor="eventType" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">EVENT-TYP</label>
+                <select
+                  id="eventType"
+                  value={eventType}
+                  onChange={(e) => setEventType(e.target.value)}
+                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
+                >
+                  {EVENT_TYPE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value} className="bg-slate-900">
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="guestCount" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">GÄSTEZAHL</label>
-                  <input
-                    type="number"
-                    id="guestCount"
-                    value={guestCount}
-                    onChange={(e) => setGuestCount(e.target.value)}
-                    placeholder="z.B. 50"
-                    min="1"
-                    className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="preferredDate" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">GEWÜNSCHTER TERMIN</label>
-                  <input
-                    type="date"
-                    id="preferredDate"
-                    value={preferredDate}
-                    onChange={(e) => setPreferredDate(e.target.value)}
-                    className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
-                  />
-                </div>
+              <div className="space-y-2">
+                <label htmlFor="guestCount" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">GÄSTEZAHL</label>
+                <input
+                  type="number"
+                  id="guestCount"
+                  value={guestCount}
+                  onChange={(e) => setGuestCount(e.target.value)}
+                  placeholder="z.B. 50"
+                  min="1"
+                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
+                />
               </div>
 
               <div className="space-y-2">
