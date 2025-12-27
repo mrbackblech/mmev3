@@ -43,6 +43,7 @@ export interface ERPnextLead {
   email_id: string;
   mobile_no?: string;
   custom_message?: string;
+  custom_custom_message?: string;
   source?: string;
   lead_owner?: string;
   [key: string]: any;
