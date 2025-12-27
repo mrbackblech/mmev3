@@ -60,13 +60,18 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
             }
             const finalImageUrl = imageUrl || `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop`;
 
-            // Highlights aus custom_highlights parsen (zeilenweise getrennt)
+            // Highlights aus custom_highlights Tabelle extrahieren
             let highlights: string[] = [];
-            if (p.custom_highlights && p.custom_highlights.trim()) {
-              highlights = p.custom_highlights
-                .split('\n')
-                .map(h => h.trim())
-                .filter(h => h.length > 0);
+            if (p.custom_highlights && Array.isArray(p.custom_highlights)) {
+              // Nach sort_order sortieren falls vorhanden, sonst nach Index
+              const sortedHighlights = p.custom_highlights.sort((a, b) => {
+                const aOrder = a.sort_order || a.idx || 0;
+                const bOrder = b.sort_order || b.idx || 0;
+                return aOrder - bOrder;
+              });
+              highlights = sortedHighlights
+                .map(h => h.highlight_text)
+                .filter(text => text && text.trim());
             }
             // Fallback falls keine Highlights vorhanden
             if (highlights.length === 0) {
