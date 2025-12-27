@@ -50,7 +50,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
     } catch (error) {
       const errorData = error instanceof Error ? {message:error.message,stack:error.stack} : {error:String(error)};
       console.error("Error creating lead:", error);
-      alert("Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt per E-Mail.");
+      alert("Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt per E-Mail an  info@mm-event.live");
     } finally {
       setLoading(false);
     }
