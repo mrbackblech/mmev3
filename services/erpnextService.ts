@@ -31,8 +31,6 @@ class ERPnextService {
       headers: {
         ...defaultHeaders,
         ...options.headers,
-        // Fix für 417 Expectation Failed: Verhindere automatische Expect-Header
-        'Expect': '',
       },
     };
 
