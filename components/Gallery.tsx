@@ -287,7 +287,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
               tabIndex={0}
               role="button"
               aria-label={`Projekt ${img.title} öffnen, Kategorie: ${img.category}`}
-              className={`flex-none relative shadow-2xl rounded-sm overflow-hidden border border-slate-800 cursor-pointer transition-all duration-500 ${isMobile ? "w-[70vw] h-[30vh] even:translate-x-[50%]" : "w-[85vw] md:w-[60vw] aspect-[16/9]"} hover:scale-[1.01] focus:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900`}
+              className={`flex-none relative shadow-2xl rounded-sm overflow-hidden border border-slate-800 cursor-pointer transition-all duration-500 ${isMobile ? "w-[75vw] h-[35vh] even:translate-x-[40%]" : "w-[85vw] md:w-[60vw] aspect-[16/9]"} hover:scale-[1.01] focus:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900`}
             >
               <img src={img.url} alt={`${img.title} - ${img.category} Event`} loading="lazy" className="w-full h-full object-cover pointer-events-none select-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>

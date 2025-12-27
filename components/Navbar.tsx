@@ -64,13 +64,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white hover:text-gold-500 transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded"
+          className="md:hidden text-white hover:text-gold-500 transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label={isMobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
           aria-expanded={isMobileMenuOpen}
           aria-controls="mobile-menu"
         >
-          {isMobileMenuOpen ? <X size={28} aria-hidden="true" /> : <Menu size={28} aria-hidden="true" />}
+          {isMobileMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
         </button>
       </div>
 
@@ -87,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="px-6 py-3 text-slate-300 hover:bg-slate-800 hover:text-gold-500 focus:bg-slate-800 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-inset uppercase text-sm tracking-widest"
+                className="px-6 py-4 text-slate-300 hover:bg-slate-800 hover:text-gold-500 focus:bg-slate-800 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-inset uppercase text-base tracking-widest"
                 role="menuitem"
               >
                 {link.name}

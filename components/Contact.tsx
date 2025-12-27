@@ -68,9 +68,9 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
           <span className="italic text-gold-500">Dialog.</span>
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-start gap-y-16">
-          <div className="lg:col-span-6">
-            <form className="space-y-8" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 items-start gap-y-12 lg:gap-y-16">
+              <div className="lg:col-span-6">
+                <form className="space-y-6 lg:space-y-8" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label htmlFor="name" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">NAME</label>
                 <input 
@@ -124,10 +124,10 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                 ></textarea>
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
-                className="flex items-center gap-2 text-white uppercase tracking-[0.4em] text-[10px] font-bold group pt-4 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded"
+                className="flex items-center justify-center gap-2 text-white uppercase tracking-[0.3em] lg:tracking-[0.4em] text-[11px] lg:text-[10px] font-bold group pt-4 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded w-full lg:w-auto px-6 py-3"
                 aria-label={loading ? "Nachricht wird gesendet" : "Kontaktformular absenden"}
               >
                 {loading ? (
@@ -145,7 +145,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
             </form>
           </div>
           <div className="hidden lg:block lg:col-span-2"></div>
-          <div className="lg:col-span-4 lg:border-l lg:border-slate-800 lg:pl-12 flex flex-col justify-start space-y-12">
+          <div className="col-span-1 lg:col-span-4 lg:border-l lg:border-slate-800 lg:pl-12 flex flex-col justify-start space-y-8 lg:space-y-12 mt-12 lg:mt-0">
             <div className="space-y-4">
                <span className="text-slate-500 text-[8px] uppercase tracking-[0.3em] font-bold block">KONTAKT</span>
                <div className="space-y-1">
