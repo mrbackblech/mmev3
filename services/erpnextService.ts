@@ -31,6 +31,8 @@ class ERPnextService {
       headers: {
         ...defaultHeaders,
         ...options.headers,
+        // Fix für 417 Expectation Failed: Verhindere automatische Expect-Header
+        'Expect': '',
       },
     };
 
@@ -87,10 +89,10 @@ class ERPnextService {
       // Standard-Felder und Custom-Felder für Projekte
       // Hinweis: custom_image wird separat geladen falls nicht direkt verfügbar
       const defaultFields = [
-        'name', 
-        'project_name', 
-        'expected_end_date', 
-        'status', 
+        'name',
+        'project_name',
+        'expected_end_date',
+        'status',
         'notes',
         'custom_location',
         'custom_highlights_text',
