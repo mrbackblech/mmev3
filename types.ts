@@ -64,8 +64,11 @@ export interface ERPnextProject {
   image?: string;
   /** Custom-Feld: Veranstaltungsort */
   custom_location?: string;
-  /** Custom-Feld: Event-Highlights als Text (zeilenweise getrennt) */
-  custom_highlights_text?: string;
+  /** Custom-Feld: Event-Highlights als Table */
+  custom_highlights?: Array<{
+    highlight?: string;
+    [key: string]: any;
+  }>;
   /** Custom-Feld: Detaillierte Beschreibung */
   custom_description?: string;
   /** Custom-Feld: Projektbild */

@@ -93,7 +93,7 @@ class ERPnextService {
         'status',
         'notes',
         'custom_location',
-        'custom_highlights_text',
+        'custom_highlights',
         'custom_description',
         'custom_image'
       ];
