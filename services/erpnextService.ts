@@ -84,9 +84,19 @@ class ERPnextService {
    */
   async getProjects(fields?: string[]): Promise<ERPnextProject[]> {
     try {
-      // Hinweis: 'image' Feld ist nicht in der Liste, da ERPnext es nicht in der API-Abfrage erlaubt
-      // Für Bilder muss ein separater API-Call für einzelne Projekte gemacht werden
-      const defaultFields = ['name', 'project_name', 'expected_end_date', 'status', 'notes'];
+      // Standard-Felder und Custom-Felder für Projekte
+      // Hinweis: custom_image wird separat geladen falls nicht direkt verfügbar
+      const defaultFields = [
+        'name', 
+        'project_name', 
+        'expected_end_date', 
+        'status', 
+        'notes',
+        'custom_location',
+        'custom_highlights_text',
+        'custom_description',
+        'custom_image'
+      ];
       const fieldsToFetch = fields || defaultFields;
       // ERPNext erwartet fields als JSON-Array im Query-String
       // Format: fields=["field1","field2"]

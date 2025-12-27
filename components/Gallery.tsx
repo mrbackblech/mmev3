@@ -45,23 +45,43 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
           setProjects(FALLBACK_IMAGES);
           setDisplayImages([...FALLBACK_IMAGES, ...FALLBACK_IMAGES, ...FALLBACK_IMAGES]);
         } else {
-          // Bilder separat laden
+          // Bilder separat laden (falls custom_image nicht direkt verfügbar)
           const projectNames = data.map(p => p.name);
           const imageMap = await erpnextService.getProjectImages(projectNames);
 
           const mappedProjects: GalleryImage[] = data.map((p, idx: number) => {
-            const projectImageUrl = imageMap.get(p.name);
-            const imageUrl = projectImageUrl || `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop`;
+            // Bild-URL: Verwende custom_image falls direkt verfügbar, sonst aus imageMap
+            let imageUrl: string | null = null;
+            if (p.custom_image) {
+              imageUrl = erpnextService.getImageUrl(p.custom_image);
+            }
+            if (!imageUrl) {
+              imageUrl = imageMap.get(p.name) || null;
+            }
+            const finalImageUrl = imageUrl || `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop`;
+
+            // Highlights aus custom_highlights parsen (zeilenweise getrennt)
+            let highlights: string[] = [];
+            if (p.custom_highlights && p.custom_highlights.trim()) {
+              highlights = p.custom_highlights
+                .split('\n')
+                .map(h => h.trim())
+                .filter(h => h.length > 0);
+            }
+            // Fallback falls keine Highlights vorhanden
+            if (highlights.length === 0) {
+              highlights = ["Premium Service", "Individuelle Planung"];
+            }
 
             return {
               id: idx + 1,
-              url: imageUrl,
+              url: finalImageUrl,
               title: p.project_name || "MM Projekt",
               category: p.status || "Event",
-              location: "Exklusiv-Location",
+              location: p.custom_location || "Exklusiv-Location",
               date: p.expected_end_date ? new Date(p.expected_end_date).toLocaleDateString('de-DE') : "In Planung",
-              description: p.notes || "Ein maßgeschneidertes Event-Konzept von MM EVENT.",
-              highlights: ["Premium Service", "Individuelle Planung"],
+              description: p.custom_description || p.notes || "Ein maßgeschneidertes Event-Konzept von MM EVENT.",
+              highlights: highlights,
               additionalImages: []
             };
           });
