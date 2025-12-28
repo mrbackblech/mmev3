@@ -2,11 +2,11 @@ import React from 'react';
 
 export const Datenschutz: React.FC = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-gold-50">
       <div className="max-w-4xl">
 
 
-        <div className="prose prose-slate max-w-none">
+        <div className="prose prose-blue max-w-none">
           <h2>1. Datenschutz auf einen Blick</h2>
 
           <h3>Allgemeine Hinweise</h3>
