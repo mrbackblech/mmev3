@@ -45,11 +45,25 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
           setProjects(FALLBACK_IMAGES);
           setDisplayImages([...FALLBACK_IMAGES, ...FALLBACK_IMAGES, ...FALLBACK_IMAGES]);
         } else {
-          // Bilder separat laden (falls custom_image nicht direkt verfügbar)
+          // Bilder und Highlights separat laden (Table-Felder werden bei Listenabfragen nicht zurückgegeben)
           const projectNames = data.map(p => p.name);
           const imageMap = await erpnextService.getProjectImages(projectNames);
+          
+          // Vollständige Projektdaten mit Highlights laden
+          const fullProjects = await Promise.all(
+            projectNames.map(async (name) => {
+              try {
+                return await erpnextService.getProject(name);
+              } catch (error) {
+                console.warn(`Could not fetch full project data for ${name}:`, error);
+                return null;
+              }
+            })
+          );
 
           const mappedProjects: GalleryImage[] = data.map((p, idx: number) => {
+            // Vollständiges Projekt mit Highlights finden
+            const fullProject = fullProjects.find(fp => fp?.name === p.name) || p;
             // Bild-URL: Verwende custom_image falls direkt verfügbar, sonst aus imageMap
             let imageUrl: string | null = null;
             if (p.custom_image) {
@@ -60,17 +74,17 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
             }
             const finalImageUrl = imageUrl || `https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop`;
 
-            // Highlights aus custom_highlights Tabelle extrahieren
+            // Highlights aus custom_highlights Tabelle extrahieren (aus vollständigem Projekt)
             let highlights: string[] = [];
-            if (p.custom_highlights && Array.isArray(p.custom_highlights)) {
+            if (fullProject.custom_highlights && Array.isArray(fullProject.custom_highlights)) {
               // Debug: Vollständige Datenstruktur prüfen
-              console.debug('Event Highlight Datenstruktur für Projekt', p.name, ':', p.custom_highlights);
-              if (p.custom_highlights.length > 0) {
-                console.debug('Erstes Highlight-Objekt:', p.custom_highlights[0]);
+              console.debug('Event Highlight Datenstruktur für Projekt', p.name, ':', fullProject.custom_highlights);
+              if (fullProject.custom_highlights.length > 0) {
+                console.debug('Erstes Highlight-Objekt:', fullProject.custom_highlights[0]);
               }
               
               // Nach sort_order sortieren falls vorhanden, sonst nach Index
-              const sortedHighlights = p.custom_highlights.sort((a, b) => {
+              const sortedHighlights = fullProject.custom_highlights.sort((a, b) => {
                 const aOrder = a.sort_order || a.idx || 0;
                 const bOrder = b.sort_order || b.idx || 0;
                 return aOrder - bOrder;
@@ -86,7 +100,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
               
               console.debug('Extrahierte Highlights für Projekt', p.name, ':', highlights);
             } else {
-              console.debug('Keine custom_highlights gefunden für Projekt', p.name, 'Daten:', p.custom_highlights);
+              console.debug('Keine custom_highlights gefunden für Projekt', p.name, 'Daten:', fullProject.custom_highlights);
             }
             // Fallback falls keine Highlights vorhanden
             if (highlights.length === 0) {
