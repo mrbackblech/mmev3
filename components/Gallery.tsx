@@ -28,6 +28,15 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
   const [displayImages, setDisplayImages] = useState<GalleryImage[]>([]);
   const [status, setStatus] = useState<LoadingState>(LoadingState.LOADING);
   
+  // Hilfsfunktion zum Entfernen von HTML-Tags aus Text
+  const stripHtml = (html: string | undefined | null): string => {
+    if (!html) return '';
+    // Erstelle temporäres DOM-Element zum Extrahieren des Textes
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  };
+  
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -108,6 +117,10 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
               highlights = ["Premium Service", "Individuelle Planung"];
             }
 
+            // Beschreibung: HTML-Tags entfernen falls vorhanden
+            const rawDescription = fullProject.custom_description || p.custom_description || p.notes || "Ein maßgeschneidertes Event-Konzept von MM EVENT.";
+            const cleanDescription = stripHtml(rawDescription);
+
             return {
               id: idx + 1,
               url: finalImageUrl,
@@ -115,7 +128,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
               category: p.status || "Event",
               location: p.custom_location || "Exklusiv-Location",
               date: p.expected_end_date ? new Date(p.expected_end_date).toLocaleDateString('de-DE') : "In Planung",
-              description: p.custom_description || p.notes || "Ein maßgeschneidertes Event-Konzept von MM EVENT.",
+              description: cleanDescription,
               highlights: highlights,
               additionalImages: []
             };
