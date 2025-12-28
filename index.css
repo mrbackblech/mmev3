@@ -2,6 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Lokal gehostete Google Fonts für MM EVENT */
+/* DSGVO-konform: Keine externen Requests */
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('./fonts/lato-300.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/lato-400.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/lato-700.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/playfair-display-italic-400.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/playfair-display-normal-400.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/playfair-display-normal-700.ttf') format('truetype');
+}
+
 body {
   background-color: #0f172a;
   color: #f8fafc;
