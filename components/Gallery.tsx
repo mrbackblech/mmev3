@@ -93,7 +93,8 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
               highlights = sortedHighlights
                 .map(h => {
                   // Prüfe verschiedene mögliche Feldnamen für Robustheit
-                  const text = h.text_editor_dman || h.highlight || h.text || h.highlight_text;
+                  // highlight ist der primäre Feldname im Event Highlight Child-Doctype
+                  const text = h.highlight || h.text_editor_dman || h.text || h.highlight_text;
                   return text;
                 })
                 .filter(text => text && text.trim());
