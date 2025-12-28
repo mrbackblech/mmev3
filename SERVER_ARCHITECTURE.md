@@ -131,7 +131,7 @@ Standard-Felder:
 ├── name (String) - Projekt-ID
 ├── project_name (String) - Anzeigename
 ├── expected_end_date (Date) - Projektdatum
-├── status (Select) - Projektstatus
+├── projekttyp (Select) - Projekttyp/Kategorie
 └── notes (Text) - Beschreibung
 
 Custom-Felder:
