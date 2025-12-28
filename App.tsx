@@ -4,6 +4,9 @@ import { Hero } from './components/Hero';
 import { Gallery } from './components/Gallery';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
+import { AGB } from './components/AGB';
+import { Impressum } from './components/Impressum';
+import { Datenschutz } from './components/Datenschutz';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('home');
@@ -34,6 +37,18 @@ export default function App() {
 
         <section id="contact" className="bg-slate-900 md:pt-20 pt-0 pb-20">
           <Contact initialMessage={contactMessage} />
+        </section>
+
+        <section id="agb">
+          <AGB />
+        </section>
+
+        <section id="impressum">
+          <Impressum />
+        </section>
+
+        <section id="datenschutz">
+          <Datenschutz />
         </section>
       </main>
 

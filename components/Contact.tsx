@@ -180,42 +180,42 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
             <form className="space-y-6 lg:space-y-8" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
+              <div className="space-y-2">
                   <label htmlFor="name" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">NAME *</label>
-                  <input
-                    type="text"
-                    id="name"
-                    required
+                <input 
+                  type="text" 
+                  id="name" 
+                  required
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
                     placeholder="Ihr vollständiger Name"
-                    autoComplete="name"
+                  autoComplete="name"
                     className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
-                    aria-required="true"
-                  />
-                </div>
+                  aria-required="true"
+                />
+              </div>
 
-                <div className="space-y-2">
+              <div className="space-y-2">
                   <label htmlFor="email" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">E-MAIL ADRESSE *</label>
-                  <input
-                    type="email"
-                    id="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                <input 
+                  type="email" 
+                  id="email" 
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                     placeholder="ihre@email.com"
-                    autoComplete="email"
+                  autoComplete="email"
                     className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
-                    aria-required="true"
-                  />
+                  aria-required="true"
+                />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <label htmlFor="phone" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">TELEFON</label>
-                <input
-                  type="tel"
-                  id="phone"
+                <input 
+                  type="tel" 
+                  id="phone" 
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+49 123 456 789"
@@ -255,8 +255,8 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
               <div className="space-y-2">
                 <label htmlFor="message" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">ERZÄHLEN SIE UNS VON IHRER VISION *</label>
-                <textarea
-                  id="message"
+                <textarea 
+                  id="message" 
                   rows={4}
                   required
                   value={message}
@@ -280,8 +280,8 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                 </label>
               </div>
 
-              <button
-                type="submit"
+              <button 
+                type="submit" 
                 disabled={status === 'success'}
                 className="flex items-center justify-center gap-2 text-white uppercase tracking-[0.3em] lg:tracking-[0.4em] text-[11px] lg:text-[10px] font-bold group pt-4 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded w-full lg:w-auto px-6 py-3"
                 aria-label={status === 'loading' ? "Nachricht wird gesendet" : "Kontaktformular absenden"}
@@ -310,8 +310,8 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
             <div className="space-y-4">
                <span className="text-slate-500 text-[8px] uppercase tracking-[0.3em] font-bold block">KONTAKT</span>
                <div className="space-y-1">
-                  <a href="mailto:hello@mmevent.com" className="text-xl md:text-2xl font-serif text-white hover:text-gold-500 transition-colors block leading-tight">hello@mmevent.com</a>
-                  <a href="tel:+490123456789" className="text-base md:text-lg font-serif text-slate-400 hover:text-white transition-colors block">+49 (0) 123 456 789</a>
+                 <a href="mailto:hello@mmevent.com" className="text-xl md:text-2xl font-serif text-white hover:text-gold-500 transition-colors block leading-tight">hello@mmevent.com</a>
+                 <a href="tel:+490123456789" className="text-base md:text-lg font-serif text-slate-400 hover:text-white transition-colors block">+49 (0) 123 456 789</a>
                </div>
             </div>
             <div className="space-y-4">

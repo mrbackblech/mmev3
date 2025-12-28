@@ -10,9 +10,9 @@ export const Footer: React.FC = () => {
         <nav className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6 mb-8 text-sm text-slate-300 uppercase tracking-wider" aria-label="Fußzeilen-Navigation">
           <a href="#home" className="hover:text-gold-500 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-950 rounded transition-colors">Home</a>
           <a href="#gallery" className="hover:text-gold-500 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-950 rounded transition-colors">Projekte</a>
-          <a href="/agb.html" className="hover:text-gold-500 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-950 rounded transition-colors">AGB</a>
-          <a href="/impressum.html" className="hover:text-gold-500 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-950 rounded transition-colors">Impressum</a>
-          <a href="/datenschutz.html" className="hover:text-gold-500 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-950 rounded transition-colors">Datenschutz</a>
+          <a href="#agb" className="hover:text-gold-500 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-950 rounded transition-colors">AGB</a>
+          <a href="#impressum" className="hover:text-gold-500 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-950 rounded transition-colors">Impressum</a>
+          <a href="#datenschutz" className="hover:text-gold-500 focus:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-950 rounded transition-colors">Datenschutz</a>
         </nav>
         <p className="text-slate-400 text-xs">
           &copy; {new Date().getFullYear()} MM EVENT. Alle Rechte vorbehalten.
