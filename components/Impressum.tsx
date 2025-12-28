@@ -2,11 +2,11 @@ import React from 'react';
 
 export const Impressum: React.FC = () => {
   return (
-    <div className="bg-gold-50">
+    <div className="bg-white">
       <div className="max-w-4xl">
 
 
-        <div className="prose prose-blue max-w-none">
+        <div className="prose prose-slate max-w-none">
           <h2>Angaben gemäß § 5 TMG</h2>
           <p><strong>MM EVENT GmbH</strong><br />
           Königsallee 1<br />

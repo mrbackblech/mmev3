@@ -2,11 +2,11 @@ import React from 'react';
 
 export const AGB: React.FC = () => {
   return (
-    <div className="bg-gold-50">
+    <div className="bg-white">
       <div className="max-w-4xl">
 
 
-        <div className="prose prose-blue max-w-none">
+        <div className="prose prose-slate max-w-none">
           <h2>1. Geltungsbereich</h2>
           <p>1.1 Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen MM EVENT GmbH (nachfolgend "wir" oder "MM EVENT") und dem Auftraggeber (nachfolgend "Kunde" oder "Sie") über die Planung, Organisation und Durchführung von Veranstaltungen.</p>
           <p>1.2 Abweichende Bedingungen des Kunden werden nicht anerkannt, es sei denn, wir haben diesen schriftlich zugestimmt.</p>
