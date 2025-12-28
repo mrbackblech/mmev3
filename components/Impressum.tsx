@@ -2,7 +2,7 @@ import React from 'react';
 
 export const Impressum: React.FC = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-transparent">
       <div className="max-w-4xl">
 
 

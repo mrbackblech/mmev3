@@ -61,15 +61,15 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
       className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
-      <div className="bg-gold-100 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-gold-200">
+      <div className="bg-gold-50 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-gold-300">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gold-300 bg-gold-200">
-          <h2 className="text-2xl font-serif font-bold text-slate-800">
+        <div className="flex items-center justify-between p-6 border-b border-gold-400 bg-gold-100">
+          <h2 className="text-2xl font-serif font-bold text-slate-900">
             {getTitle()}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gold-300 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500"
+            className="p-2 hover:bg-gold-200 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500"
             aria-label="Modal schließen"
           >
             <X className="w-6 h-6 text-slate-600" />
@@ -82,10 +82,10 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-gold-300 p-6 flex justify-end bg-gold-200">
+        <div className="border-t border-gold-400 p-6 flex justify-end bg-gold-100">
           <button
             onClick={onClose}
-            className="px-6 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+            className="px-6 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2"
           >
             Schließen
           </button>
