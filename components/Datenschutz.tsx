@@ -6,7 +6,7 @@ export const Datenschutz: React.FC = () => {
       <div className="max-w-4xl">
 
 
-        <div className="prose prose-slate max-w-none text-slate-900 [&_h2]:text-slate-900 [&_h3]:text-slate-900 [&_p]:text-slate-900 [&_strong]:text-slate-900 [&_li]:text-slate-900">
+        <div className="prose prose-invert max-w-none text-slate-100 [&_h2]:text-gold-500 [&_h3]:text-gold-400 [&_p]:text-slate-200 [&_strong]:text-gold-400 [&_li]:text-slate-200 [&_a]:text-gold-500 [&_a:hover]:text-gold-400">
           <h2>1. Datenschutz auf einen Blick</h2>
 
           <h3>Allgemeine Hinweise</h3>
@@ -53,7 +53,7 @@ export const Datenschutz: React.FC = () => {
           <p>Viele Datenverarbeitungsvorgänge sind nur mit Ihrer ausdrücklichen Einwilligung möglich. Sie können eine bereits erteilte Einwilligung jederzeit widerrufen. Dazu reicht eine formlose Mitteilung per E-Mail an uns. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Datenverarbeitung bleibt vom Widerruf unberührt.</p>
 
           <h3>Beschwerderecht bei der zuständigen Aufsichtsbehörde</h3>
-          <p>Im Falle datenschutzrechtlicher Verstöße steht dem Betroffenen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu. Zuständige Aufsichtsbehörde in datenschutzrechtlichen Fragen ist der Landesdatenschutzbeauftragte des Bundeslandes, in dem unser Unternehmen seinen Sitz hat. Eine Liste der Datenschutzbeauftragten sowie deren Kontaktdaten können folgendem Link entnommen werden: <a href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html" target="_blank" className="text-gold-500 hover:text-gold-600">https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html</a>.</p>
+          <p>Im Falle datenschutzrechtlicher Verstöße steht dem Betroffenen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu. Zuständige Aufsichtsbehörde in datenschutzrechtlichen Fragen ist der Landesdatenschutzbeauftragte des Bundeslandes, in dem unser Unternehmen seinen Sitz hat. Eine Liste der Datenschutzbeauftragten sowie deren Kontaktdaten können folgendem Link entnommen werden: <a href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html" target="_blank" className="text-gold-500 hover:text-gold-400">https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html</a>.</p>
 
           <h3>Recht auf Datenübertragbarkeit</h3>
           <p>Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung oder in Erfüllung eines Vertrags automatisiert verarbeiten, an sich oder an einen Dritten in einem gängigen, maschinenlesbaren Format aushändigen zu lassen. Sofern Sie die direkte Übertragung der Daten an einen anderen Verantwortlichen verlangen, erfolgt dies nur, soweit es technisch machbar ist.</p>
@@ -89,13 +89,13 @@ export const Datenschutz: React.FC = () => {
 
           <p>Die von Ihnen zum Zwecke des Newsletter-Bezugs bei uns hinterlegten Daten werden von uns bis zu Ihrer Austragung aus dem Newsletter gespeichert und nach der Abbestellung des Newsletters gelöscht. Daten, die zu anderen Zwecken bei uns gespeichert wurden (z. B. E-Mail-Adressen für den Mitgliederbereich) bleiben hiervon unberührt.</p>
 
-          <p className="text-sm text-slate-600 mt-8"><em>Stand: {new Date().toLocaleDateString('de-DE')}</em></p>
+          <p className="text-sm text-slate-400 mt-8"><em>Stand: {new Date().toLocaleDateString('de-DE')}</em></p>
 
-          <p className="text-sm text-slate-600"><strong>MM EVENT GmbH</strong><br />
+          <p className="text-sm text-slate-400"><strong className="text-gold-400">MM EVENT GmbH</strong><br />
           Königsallee 1<br />
           40212 Düsseldorf</p>
 
-          <p className="text-sm text-slate-600"><em>Quelle: <a href="https://www.e-recht24.de" target="_blank" className="text-gold-500 hover:text-gold-600">eRecht24</a> - Rechtsberatung von Rechtsanwalt Christian Solmecke</em></p>
+          <p className="text-sm text-slate-400"><em>Quelle: <a href="https://www.e-recht24.de" target="_blank" className="text-gold-500 hover:text-gold-400">eRecht24</a> - Rechtsberatung von Rechtsanwalt Christian Solmecke</em></p>
         </div>
       </div>
     </div>

@@ -58,34 +58,34 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
-      <div className="bg-gold-50 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-gold-300">
+      <div className="bg-slate-900 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border-2 border-gold-500">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gold-400 bg-gold-100">
-          <h2 className="text-2xl font-serif font-bold text-slate-900">
+        <div className="flex items-center justify-between p-6 border-b-2 border-gold-500 bg-slate-800">
+          <h2 className="text-2xl font-serif font-bold text-gold-500">
             {getTitle()}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gold-200 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500"
+            className="p-2 hover:bg-slate-700 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500"
             aria-label="Modal schließen"
           >
-            <X className="w-6 h-6 text-slate-600" />
+            <X className="w-6 h-6 text-slate-300 hover:text-gold-500 transition-colors" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 bg-slate-800">
           {getContent()}
         </div>
 
         {/* Footer */}
-        <div className="border-t border-gold-400 p-6 flex justify-end bg-gold-100">
+        <div className="border-t-2 border-gold-500 p-6 flex justify-end bg-slate-800">
           <button
             onClick={onClose}
-            className="px-6 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2"
+            className="px-6 py-2 bg-gold-500 text-slate-900 rounded-lg hover:bg-gold-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-800 font-medium"
           >
             Schließen
           </button>

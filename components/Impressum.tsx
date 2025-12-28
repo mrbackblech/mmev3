@@ -6,7 +6,7 @@ export const Impressum: React.FC = () => {
       <div className="max-w-4xl">
 
 
-        <div className="prose prose-slate max-w-none text-slate-900 [&_h2]:text-slate-900 [&_h3]:text-slate-900 [&_p]:text-slate-900 [&_strong]:text-slate-900 [&_li]:text-slate-900">
+        <div className="prose prose-invert max-w-none text-slate-100 [&_h2]:text-gold-500 [&_h3]:text-gold-400 [&_p]:text-slate-200 [&_strong]:text-gold-400 [&_li]:text-slate-200 [&_a]:text-gold-500 [&_a:hover]:text-gold-400">
           <h2>Angaben gemäß § 5 TMG</h2>
           <p><strong>MM EVENT GmbH</strong><br />
           Königsallee 1<br />
@@ -52,17 +52,17 @@ export const Impressum: React.FC = () => {
           <p>Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.</p>
 
           <h2>Streitschlichtung</h2>
-          <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" className="text-gold-500 hover:text-gold-600">https://ec.europa.eu/consumers/odr/</a>.<br />
+          <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" className="text-gold-500 hover:text-gold-400">https://ec.europa.eu/consumers/odr/</a>.<br />
           Unsere E-Mail-Adresse finden Sie oben im Impressum.</p>
 
           <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
 
           <h2>Datenschutz</h2>
-          <p>Informationen zum Datenschutz finden Sie in unserer <a href="#datenschutz" className="text-gold-500 hover:text-gold-600">Datenschutzerklärung</a>.</p>
+          <p>Informationen zum Datenschutz finden Sie in unserer <a href="#datenschutz" className="text-gold-500 hover:text-gold-400">Datenschutzerklärung</a>.</p>
 
-          <p className="text-sm text-slate-600 mt-8"><em>Stand: {new Date().toLocaleDateString('de-DE')}</em></p>
+          <p className="text-sm text-slate-400 mt-8"><em>Stand: {new Date().toLocaleDateString('de-DE')}</em></p>
 
-          <p className="text-sm text-slate-600"><em>Quelle: <a href="https://www.e-recht24.de" target="_blank" className="text-gold-500 hover:text-gold-600">eRecht24</a> - Rechtsberatung von Rechtsanwalt Christian Solmecke</em></p>
+          <p className="text-sm text-slate-400"><em>Quelle: <a href="https://www.e-recht24.de" target="_blank" className="text-gold-500 hover:text-gold-400">eRecht24</a> - Rechtsberatung von Rechtsanwalt Christian Solmecke</em></p>
         </div>
       </div>
     </div>

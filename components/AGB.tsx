@@ -6,7 +6,7 @@ export const AGB: React.FC = () => {
       <div className="max-w-4xl">
 
 
-        <div className="prose prose-slate max-w-none text-slate-900 [&_h2]:text-slate-900 [&_h3]:text-slate-900 [&_p]:text-slate-900 [&_strong]:text-slate-900 [&_li]:text-slate-900">
+        <div className="prose prose-invert max-w-none text-slate-100 [&_h2]:text-gold-500 [&_h3]:text-gold-400 [&_p]:text-slate-200 [&_strong]:text-gold-400 [&_li]:text-slate-200 [&_a]:text-gold-500 [&_a:hover]:text-gold-400">
           <h2>1. Geltungsbereich</h2>
           <p>1.1 Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen MM EVENT GmbH (nachfolgend "wir" oder "MM EVENT") und dem Auftraggeber (nachfolgend "Kunde" oder "Sie") über die Planung, Organisation und Durchführung von Veranstaltungen.</p>
           <p>1.2 Abweichende Bedingungen des Kunden werden nicht anerkannt, es sei denn, wir haben diesen schriftlich zugestimmt.</p>
@@ -92,13 +92,13 @@ export const AGB: React.FC = () => {
           <p>13.2 Änderungen werden dem Kunden rechtzeitig mitgeteilt.</p>
           <p>13.3 Bei Widerspruch innerhalb von 14 Tagen gelten die alten AGB weiter.</p>
 
-          <p className="text-sm text-slate-600 mt-8"><em>Stand: {new Date().toLocaleDateString('de-DE')}</em></p>
+          <p className="text-sm text-slate-400 mt-8"><em>Stand: {new Date().toLocaleDateString('de-DE')}</em></p>
 
-          <p className="text-sm text-slate-600"><strong>MM EVENT GmbH</strong><br />
+          <p className="text-sm text-slate-400"><strong className="text-gold-400">MM EVENT GmbH</strong><br />
           Königsallee 1<br />
           40212 Düsseldorf</p>
 
-          <p className="text-sm text-slate-600"><em>Quelle: Rechtsberatung von Rechtsanwalt Christian Solmecke (<a href="https://www.e-recht24.de" target="_blank" className="text-gold-500 hover:text-gold-600">eRecht24</a>)</em></p>
+          <p className="text-sm text-slate-400"><em>Quelle: Rechtsberatung von Rechtsanwalt Christian Solmecke (<a href="https://www.e-recht24.de" target="_blank" className="text-gold-500 hover:text-gold-400">eRecht24</a>)</em></p>
         </div>
       </div>
     </div>
