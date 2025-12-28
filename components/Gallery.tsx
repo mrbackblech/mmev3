@@ -63,19 +63,30 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
             // Highlights aus custom_highlights Tabelle extrahieren
             let highlights: string[] = [];
             if (p.custom_highlights && Array.isArray(p.custom_highlights)) {
-              // Debug: Datenstruktur prüfen
+              // Debug: Vollständige Datenstruktur prüfen
+              console.debug('Event Highlight Datenstruktur für Projekt', p.name, ':', p.custom_highlights);
               if (p.custom_highlights.length > 0) {
-                console.debug('Event Highlight Datenstruktur:', p.custom_highlights[0]);
+                console.debug('Erstes Highlight-Objekt:', p.custom_highlights[0]);
               }
+              
               // Nach sort_order sortieren falls vorhanden, sonst nach Index
               const sortedHighlights = p.custom_highlights.sort((a, b) => {
                 const aOrder = a.sort_order || a.idx || 0;
                 const bOrder = b.sort_order || b.idx || 0;
                 return aOrder - bOrder;
               });
+              
               highlights = sortedHighlights
-                .map(h => h.text_editor_dman)
+                .map(h => {
+                  // Prüfe verschiedene mögliche Feldnamen für Robustheit
+                  const text = h.text_editor_dman || h.highlight || h.text || h.highlight_text;
+                  return text;
+                })
                 .filter(text => text && text.trim());
+              
+              console.debug('Extrahierte Highlights für Projekt', p.name, ':', highlights);
+            } else {
+              console.debug('Keine custom_highlights gefunden für Projekt', p.name, 'Daten:', p.custom_highlights);
             }
             // Fallback falls keine Highlights vorhanden
             if (highlights.length === 0) {
