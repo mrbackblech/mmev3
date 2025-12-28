@@ -15,19 +15,6 @@ interface ContactProps {
  */
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
-/**
- * Event-Typ Optionen für das Dropdown
- */
-const EVENT_TYPE_OPTIONS = [
-  { value: '', label: 'Bitte wählen...' },
-  { value: 'Hochzeit', label: 'Hochzeit' },
-  { value: 'Firmenevent', label: 'Firmenevent' },
-  { value: 'Geburtstag', label: 'Geburtstag' },
-  { value: 'Jubiläum', label: 'Jubiläum' },
-  { value: 'Gala-Dinner', label: 'Gala-Dinner' },
-  { value: 'Konferenz', label: 'Konferenz' },
-  { value: 'Sonstiges', label: 'Sonstiges' },
-] as const;
 
 
 /**
@@ -45,11 +32,6 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
   const [customerName, setCustomerName] = useState(''); // Vollständiger Name des Kunden
   const [email, setEmail] = useState(''); // E-Mail-Adresse
   const [phone, setPhone] = useState(''); // Telefonnummer (optional)
-
-  // Optionale Event-Details
-  const [eventType, setEventType] = useState(''); // Art der Veranstaltung
-  const [guestCount, setGuestCount] = useState(''); // Anzahl der Gäste
-  const [newsletter, setNewsletter] = useState(false); // Newsletter-Anmeldung
 
   // UI State
   const [status, setStatus] = useState<FormStatus>('idle'); // Formular-Status
@@ -113,18 +95,10 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
         leadData.mobile_no = phone.trim();
       }
 
-      // Nachricht mit Event-Details zusammenstellen
-      let fullMessage = message.trim();
+      // Nachricht direkt verwenden
+      const fullMessage = message.trim();
 
-      console.log('Ursprüngliche Nachricht:', message);
-      console.log('Getrimmte Nachricht:', fullMessage);
-
-      // Event-spezifische Informationen hinzufügen
-      if (eventType) fullMessage += `\n\nEvent-Typ: ${eventType}`;
-      if (guestCount) fullMessage += `\n\nGästezahl: ${guestCount}`;
-      if (newsletter) fullMessage += `\n\nNewsletter-Anmeldung: Ja`;
-
-      console.log('Vollständige Nachricht:', fullMessage);
+      console.log('Nachricht:', fullMessage);
 
       // Nachricht in ERPNext Lead speichern
       leadData.custom_message = fullMessage;
@@ -141,9 +115,6 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       setEmail('');
       setPhone('');
       setMessage('');
-      setEventType('');
-      setGuestCount('');
-      setNewsletter(false);
 
     } catch (error) {
       console.error("Fehler bei Lead-Erstellung:", error);
@@ -224,34 +195,6 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                 />
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="eventType" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">EVENT-TYP</label>
-                <select
-                  id="eventType"
-                  value={eventType}
-                  onChange={(e) => setEventType(e.target.value)}
-                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base"
-                >
-                  {EVENT_TYPE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value} className="bg-slate-900">
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="guestCount" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">GÄSTEZAHL</label>
-                <input
-                  type="number"
-                  id="guestCount"
-                  value={guestCount}
-                  onChange={(e) => setGuestCount(e.target.value)}
-                  placeholder="z.B. 50"
-                  min="1"
-                  className="w-full bg-transparent border-b border-slate-800 text-white py-2 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all font-serif text-base placeholder-slate-600"
-                />
-              </div>
 
               <div className="space-y-2">
                 <label htmlFor="message" className="block text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold">ERZÄHLEN SIE UNS VON IHRER VISION *</label>
@@ -267,18 +210,6 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                 ></textarea>
               </div>
 
-              <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  id="newsletter"
-                  checked={newsletter}
-                  onChange={(e) => setNewsletter(e.target.checked)}
-                  className="w-4 h-4 text-gold-500 bg-transparent border-slate-600 rounded focus:ring-gold-500 focus:ring-2"
-                />
-                <label htmlFor="newsletter" className="text-sm text-slate-400 font-serif">
-                  Ja, ich möchte den Newsletter abonnieren und über aktuelle Angebote informiert werden.
-                </label>
-              </div>
 
               <button 
                 type="submit" 
