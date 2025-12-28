@@ -57,7 +57,7 @@ export interface ERPnextProject {
   /** Erwartetes Enddatum */
   expected_end_date?: string;
   /** Projekttyp/Kategorie des Projekts */
-  projekttyp?: string;
+  project_type?: string;
   /** Projektnotizen/Beschreibung */
   notes?: string;
   /** Bild-URL für das Projekt */

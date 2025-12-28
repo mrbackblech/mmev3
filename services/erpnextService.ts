@@ -91,7 +91,7 @@ class ERPnextService {
         'name',
         'project_name',
         'expected_end_date',
-        'projekttyp',
+        'project_type',
         'notes',
         'custom_location',
         'custom_highlights',

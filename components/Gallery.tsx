@@ -143,7 +143,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
               id: idx + 1,
               url: finalImageUrl,
               title: p.project_name || "MM Projekt",
-              category: p.projekttyp || "Event",
+              category: p.project_type || "Event",
               location: p.custom_location || "Exklusiv-Location",
               date: p.expected_end_date ? new Date(p.expected_end_date).toLocaleDateString('de-DE') : "In Planung",
               description: cleanDescription,
