@@ -86,6 +86,9 @@ class ERPnextService {
     try {
       // Standard-Felder und Custom-Felder für Projekte
       // Hinweis: custom_image wird separat geladen falls nicht direkt verfügbar
+      // custom_highlights ist ein Table-Feld; ERPNext gibt standardmäßig alle Child-Felder zurück
+      // Falls Child-Felder nicht zurückkommen, können sie explizit angefordert werden:
+      // z.B. 'custom_highlights.text_editor_dman', 'custom_highlights.sort_order'
       const defaultFields = [
         'name',
         'project_name',

@@ -63,6 +63,10 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
             // Highlights aus custom_highlights Tabelle extrahieren
             let highlights: string[] = [];
             if (p.custom_highlights && Array.isArray(p.custom_highlights)) {
+              // Debug: Datenstruktur prüfen
+              if (p.custom_highlights.length > 0) {
+                console.debug('Event Highlight Datenstruktur:', p.custom_highlights[0]);
+              }
               // Nach sort_order sortieren falls vorhanden, sonst nach Index
               const sortedHighlights = p.custom_highlights.sort((a, b) => {
                 const aOrder = a.sort_order || a.idx || 0;
@@ -70,7 +74,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
                 return aOrder - bOrder;
               });
               highlights = sortedHighlights
-                .map(h => h.highlight_text)
+                .map(h => h.text_editor_dman)
                 .filter(text => text && text.trim());
             }
             // Fallback falls keine Highlights vorhanden
