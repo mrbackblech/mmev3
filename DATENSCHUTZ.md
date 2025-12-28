@@ -82,11 +82,9 @@ Wir erheben, verarbeiten und nutzen personenbezogene Daten nur, soweit sie für 
 
 ## 4. Cookies
 
-Unsere Website verwendet Cookies. Cookies sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert. Cookies richten auf Ihrem Rechner keinen Schaden an und enthalten keine Viren. Cookies dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen.
+Unsere Website verwendet derzeit keine Cookies. Alle Schriftarten und Ressourcen werden lokal gehostet, um Ihre Privatsphäre zu schützen und DSGVO-konform zu bleiben.
 
-Die meisten der von uns verwendeten Cookies sind so genannte "Session-Cookies". Sie werden nach Ende Ihres Besuchs automatisch gelöscht. Andere Cookies bleiben auf Ihrem Endgerät gespeichert, bis Sie diese löschen. Diese Cookies ermöglichen es uns, Ihren Browser beim nächsten Besuch wiederzuerkennen.
-
-Sie können Ihren Browser so einstellen, dass Sie über das Setzen von Cookies informiert werden und Cookies nur im Einzelfall erlauben, die Annahme von Cookies für bestimmte Fälle oder generell ausschließen sowie das automatische Löschen der Cookies beim Schließen des Browsers aktivieren. Bei der Deaktivierung von Cookies kann die Funktionalität dieser Website eingeschränkt sein.
+Sollten in Zukunft Cookies für bestimmte Funktionen (z. B. Analyse-Tools oder Newsletter-Anmeldungen) eingesetzt werden, werden wir Sie darüber transparent informieren und Ihre ausdrückliche Einwilligung einholen.
 
 ## 5. Newsletter
 
