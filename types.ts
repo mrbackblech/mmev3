@@ -67,7 +67,13 @@ export interface ERPnextProject {
   /** Custom-Feld: Event-Highlights als Table */
   custom_highlights?: Array<{
     highlight?: string;  // Primäres Feld im Event Highlight Child-Doctype
-    text_editor_dman?: string;
+    sort_order?: number;
+    idx?: number;
+    [key: string]: any;
+  }>;
+  /** Custom-Feld: Zusätzliche Bilder als Table */
+  custom_additional_images?: Array<{
+    image?: string;  // Bild-Pfad im Project Image Child-Doctype
     sort_order?: number;
     idx?: number;
     [key: string]: any;

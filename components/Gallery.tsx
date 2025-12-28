@@ -117,6 +117,24 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
               highlights = ["Premium Service", "Individuelle Planung"];
             }
 
+            // Zusätzliche Bilder aus custom_additional_images Tabelle extrahieren
+            let additionalImages: string[] = [];
+            if (fullProject.custom_additional_images && Array.isArray(fullProject.custom_additional_images)) {
+              // Nach sort_order sortieren falls vorhanden, sonst nach Index
+              const sortedImages = fullProject.custom_additional_images.sort((a, b) => {
+                const aOrder = a.sort_order || a.idx || 0;
+                const bOrder = b.sort_order || b.idx || 0;
+                return aOrder - bOrder;
+              });
+              
+              additionalImages = sortedImages
+                .map(img => {
+                  const imagePath = img.image;
+                  return imagePath ? erpnextService.getImageUrl(imagePath) : null;
+                })
+                .filter((url): url is string => url !== null);
+            }
+
             // Beschreibung: HTML-Tags entfernen falls vorhanden
             const rawDescription = fullProject.custom_description || p.custom_description || p.notes || "Ein maßgeschneidertes Event-Konzept von MM EVENT.";
             const cleanDescription = stripHtml(rawDescription);
@@ -130,7 +148,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
               date: p.expected_end_date ? new Date(p.expected_end_date).toLocaleDateString('de-DE') : "In Planung",
               description: cleanDescription,
               highlights: highlights,
-              additionalImages: []
+              additionalImages: additionalImages
             };
           });
           setProjects(mappedProjects);
@@ -432,6 +450,30 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
                         </div>
                     </div>
                 </div>
+                {selectedImage.additionalImages && selectedImage.additionalImages.length > 0 && (
+                  <div className="mt-16 mb-24">
+                    <h3 className="text-gold-500 font-serif text-2xl mb-8">Weitere Eindrücke</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                      {selectedImage.additionalImages.map((imgUrl, index) => (
+                        <div 
+                          key={index}
+                          className="relative aspect-[16/9] overflow-hidden rounded-sm border border-slate-800 cursor-pointer hover:scale-[1.02] transition-transform"
+                          onClick={() => {
+                            // Bild in neuem Tab öffnen
+                            window.open(imgUrl, '_blank');
+                          }}
+                        >
+                          <img 
+                            src={imgUrl} 
+                            alt={`${selectedImage.title} - Bild ${index + 1}`}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div className="text-center pb-12 pt-12 border-t border-slate-800">
                     <h3 className="text-3xl font-serif text-white mb-8">Interesse geweckt?</h3>
                     <button 
