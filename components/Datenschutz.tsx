@@ -6,7 +6,7 @@ export const Datenschutz: React.FC = () => {
       <div className="max-w-4xl">
 
 
-        <div className="prose prose-slate max-w-none">
+        <div className="prose prose-slate max-w-none text-slate-900 [&_h2]:text-slate-900 [&_h3]:text-slate-900 [&_p]:text-slate-900 [&_strong]:text-slate-900 [&_li]:text-slate-900">
           <h2>1. Datenschutz auf einen Blick</h2>
 
           <h3>Allgemeine Hinweise</h3>
