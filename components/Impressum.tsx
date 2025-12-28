@@ -2,17 +2,9 @@ import React from 'react';
 
 export const Impressum: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-6 py-16 max-w-4xl">
-        <div className="mb-8">
-          <a href="#home" className="text-gold-500 hover:text-gold-600 transition-colors inline-flex items-center">
-            ← Zurück zur Startseite
-          </a>
-        </div>
+    <div className="bg-white">
+      <div className="max-w-4xl">
 
-        <h1 className="text-4xl font-serif font-bold text-slate-900 mb-12 text-center">
-          Impressum
-        </h1>
 
         <div className="prose prose-slate max-w-none">
           <h2>Angaben gemäß § 5 TMG</h2>

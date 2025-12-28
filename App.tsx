@@ -4,13 +4,12 @@ import { Hero } from './components/Hero';
 import { Gallery } from './components/Gallery';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
-import { AGB } from './components/AGB';
-import { Impressum } from './components/Impressum';
-import { Datenschutz } from './components/Datenschutz';
+import { LegalModal, LegalModalType } from './components/LegalModal';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [contactMessage, setContactMessage] = useState('');
+  const [legalModal, setLegalModal] = useState<LegalModalType>(null);
 
   const handleInquire = (projectTitle: string) => {
     setContactMessage(`Ich interessiere mich für das Projekt "${projectTitle}" und würde gerne mehr erfahren.`);
@@ -38,21 +37,14 @@ export default function App() {
         <section id="contact" className="bg-slate-900 md:pt-20 pt-0 pb-20">
           <Contact initialMessage={contactMessage} />
         </section>
-
-        <section id="agb">
-          <AGB />
-        </section>
-
-        <section id="impressum">
-          <Impressum />
-        </section>
-
-        <section id="datenschutz">
-          <Datenschutz />
-        </section>
       </main>
 
-      <Footer />
+      <Footer onLegalClick={setLegalModal} />
+
+      <LegalModal
+        type={legalModal}
+        onClose={() => setLegalModal(null)}
+      />
     </div>
   );
 }
