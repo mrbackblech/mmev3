@@ -1,7 +1,16 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from 'react';
+import React, { useRef, useState, useEffect, useLayoutEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, X, MapPin, Calendar, CheckCircle2 } from 'lucide-react';
 import { GalleryImage, LoadingState } from '../types';
 import { erpnextService } from '../services/erpnextService';
+
+// Hilfsfunktion zum Entfernen von HTML-Tags aus Text (außerhalb der Komponente für bessere Performance)
+const stripHtml = (html: string | undefined | null): string => {
+  if (!html) return '';
+  // Erstelle temporäres DOM-Element zum Extrahieren des Textes
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+};
 
 const FALLBACK_IMAGES: GalleryImage[] = [
   { 
@@ -27,15 +36,6 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
   const [projects, setProjects] = useState<GalleryImage[]>([]);
   const [displayImages, setDisplayImages] = useState<GalleryImage[]>([]);
   const [status, setStatus] = useState<LoadingState>(LoadingState.LOADING);
-  
-  // Hilfsfunktion zum Entfernen von HTML-Tags aus Text
-  const stripHtml = (html: string | undefined | null): string => {
-    if (!html) return '';
-    // Erstelle temporäres DOM-Element zum Extrahieren des Textes
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
-  };
   
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -375,7 +375,13 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
               aria-label={`Projekt ${img.title} öffnen, Kategorie: ${img.category}`}
               className={`flex-none relative shadow-2xl rounded-sm overflow-hidden border border-slate-800 cursor-pointer transition-all duration-500 ${isMobile ? "w-[75vw] h-[35vh] even:translate-x-[40%]" : "w-[85vw] md:w-[60vw] aspect-[16/9]"} hover:scale-[1.01] focus:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-slate-900`}
             >
-              <img src={img.url} alt={`${img.title} - ${img.category} Event`} loading="lazy" className="w-full h-full object-cover pointer-events-none select-none" />
+              <img 
+                src={img.url} 
+                alt={`${img.title} - ${img.category} Event`} 
+                loading="lazy" 
+                sizes="(max-width: 768px) 75vw, (max-width: 1024px) 85vw, 60vw"
+                className="w-full h-full object-cover pointer-events-none select-none" 
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
               <div className="absolute bottom-0 left-0 w-full p-4 md:p-8">
                 <span className="bg-gold-500/90 text-slate-900 text-[10px] md:text-xs font-bold uppercase tracking-widest py-1 px-2 md:px-3 mb-2 md:mb-3 rounded-sm inline-block">{img.category}</span>
@@ -420,7 +426,12 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
                 </div>
             </div>
             <div className="relative w-full h-[60vh] md:h-[85vh] shrink-0">
-                <img src={selectedImage.url} alt={`${selectedImage.title} - Hauptbild des ${selectedImage.category} Events`} className="w-full h-full object-cover" />
+                <img 
+                  src={selectedImage.url} 
+                  alt={`${selectedImage.title} - Hauptbild des ${selectedImage.category} Events`} 
+                  sizes="100vw"
+                  className="w-full h-full object-cover" 
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 w-full p-6 md:p-16 max-w-7xl mx-auto">
                     <div className="animate-[slideUp_0.6s_ease-out]">
@@ -466,6 +477,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onInquire }) => {
                           <img 
                             src={imgUrl} 
                             alt={`${selectedImage.title} - Bild ${index + 1}`}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             className="w-full h-full object-cover"
                             loading="lazy"
                           />
